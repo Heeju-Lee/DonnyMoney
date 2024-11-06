@@ -40,11 +40,5 @@ public class StockOrder extends Auditable {
 	private int quantity;
 	
 	private int amt;
-	
 
-//	@Override
-//	public String toString() {
-//		return "StockOrder [SNum=" + SNum + ", name=" + name + ", code=" + code + ", price=" + price + ", quantity="
-//				+ quantity + ", amt=" + amt + "]";
-//	}
 }

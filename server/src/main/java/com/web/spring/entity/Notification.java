@@ -37,10 +37,6 @@ public class Notification extends Auditable{
 	private String message;
 	
 	private String category;
-//	
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-//	@Column(name="notification_date")
-//	private LocalDate date;	
 
     @ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "parent_num")
@@ -56,6 +52,5 @@ public class Notification extends Auditable{
 				+ ", child=" + child + ", getCreatedAt()=" + getCreatedAt() + ", getModifiedAt()=" + getModifiedAt()
 				+ "]";
 	}
-
 	
 }

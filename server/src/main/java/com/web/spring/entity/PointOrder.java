@@ -33,10 +33,7 @@ public class PointOrder extends Auditable{
 	@Column(name = "order_num")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderNum;
-	
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-//	@Column(name="order_date")
-//	private Date date;
+
 	private int amount;
 	private String payType;
 	
@@ -45,13 +42,7 @@ public class PointOrder extends Auditable{
 		return "PointOrder [orderNum=" + orderNum + ", amount=" + amount + ", payType=" + payType + ", getCreatedAt()="
 				+ getCreatedAt() + ", getModifiedAt()=" + getModifiedAt() + "]";
 	}
-	
-//	@Override
-//	public String toString() {
-//		return "Order [orderNum=" + orderNum + ", date=" + date + ", amount=" + amount + ", payType=" + payType + "]";
-//	}
-//	
-	
+
 	
 
 }

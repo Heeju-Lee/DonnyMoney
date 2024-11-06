@@ -33,6 +33,9 @@ public class ChildRequestDto {
 	private String birthdate;
 	private String phone;
 	private String email;
+
+	@NotNull
+	private Long parentNum;
 	
 	public Child toChild(ChildRequestDto childRequestDto) {
 		

@@ -41,13 +41,11 @@ public class Parent extends Auditable{
     private String email;
     private String address;
     
-	@OneToMany(fetch = FetchType.LAZY , cascade = {CascadeType.PERSIST})
-	@JoinColumn(name = "parent_num", nullable = false, updatable = false) 
+	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY , cascade = {CascadeType.PERSIST})
 	private List<Child> children = new ArrayList<>();
-	
-	
+
 	@OneToMany(fetch = FetchType.LAZY , cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	@JoinColumn(name = "parent_num", nullable = false, updatable = false) 
+	@JoinColumn(name = "parent_num")
 	private List<PointOrder> orders = new ArrayList<>();
     
 	@Override
@@ -55,6 +53,6 @@ public class Parent extends Auditable{
 		return "Parent [parentNum=" + parentNum + ", name=" + name + ", birthdate=" + birthdate + ", phone=" + phone + ", email="
 				+ email + ", address=" + address + "]";
 	}
-   
+
 
 }

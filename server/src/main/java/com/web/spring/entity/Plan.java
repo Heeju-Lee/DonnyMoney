@@ -45,10 +45,6 @@ public class Plan extends Auditable{
 	private int saving;
 	
 	private int others;
-//	
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-//	private LocalDate date;	
-//	
 
 	@Override
 	public String toString() {
@@ -56,14 +52,5 @@ public class Plan extends Auditable{
 				+ ", cvs=" + cvs + ", saving=" + saving + ", others=" + others + ", getCreatedAt()=" + getCreatedAt()
 				+ ", getModifiedAt()=" + getModifiedAt() + "]";
 	}
-	
-	
-	
-//	@Override
-//	public String toString() {
-//		return "plan [planNum=" + planNum + ", shopping=" + shopping + ", food=" + food + ", transport=" + transport
-//				+ ", cvs=" + cvs + ", saving=" + saving + ", others=" + others + ", date=" + date + "]";
-//	}
-	
 	
 }

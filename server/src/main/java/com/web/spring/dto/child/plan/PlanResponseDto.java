@@ -33,7 +33,8 @@ public class PlanResponseDto {
 	    this.food = plan.getFood();
 	    this.others = plan.getOthers();
 	    this.saving = plan.getSaving();
-	    //this.Local
+		this.createdAt = plan.getCreatedAt();
+		this.modifiedAt = plan.getModifiedAt();
 	}
 	
 }

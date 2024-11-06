@@ -36,16 +36,17 @@ public class Wish extends Auditable{
 
     private String img;
     private String name;
-    private String price;
+    private int price;
 
     @Column(name="saving_amt")
-    private String savingAmt;
+    private int savingAmt;
+    
+    private Boolean isFinish;
 
 	@Override
 	public String toString() {
-		return "Wish [wNum=" + wishNum + ", img=" + img + ", name=" + name + ", price=" + price + ", savingAmt="
-				+ savingAmt + ", getCreatedAt()=" + getCreatedAt() + ", getModifiedAt()=" + getModifiedAt() + "]";
+		return "Wish [wishNum=" + wishNum + ", img=" + img + ", name=" + name + ", price=" + price + ", savingAmt="
+				+ savingAmt + ", isFinish=" + isFinish + "]";
 	}
 
-    
 }
