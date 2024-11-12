@@ -1,5 +1,6 @@
 package com.web.spring.dto.child.wish;
 
+import com.web.spring.entity.IsFinish;
 import com.web.spring.entity.Wish;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +22,8 @@ public class WishResponseDto {
 
     private int savingAmt;
     
-    private Boolean isFinish;
-    
+    private IsFinish isFinish;
+//    private String isFinish;
 	
 	public WishResponseDto(Wish wish) {
 		this.wishNum = wish.getWishNum();

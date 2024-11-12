@@ -3,6 +3,8 @@ package com.web.spring.entity;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.web.spring.dto.notification.NotificationResponseDto;
 import com.web.spring.global.audit.Auditable;
 
 import jakarta.persistence.Column;
@@ -34,9 +36,11 @@ public class Notification extends Auditable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long notiNum;
 	
-	private String message;
+	private String message; // 메시지 내용
 	
-	private String category;
+	private String category; // 알림 유형
+	
+	private String senderType; // "parent", "child"
 
     @ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "parent_num")
@@ -46,11 +50,32 @@ public class Notification extends Auditable{
 	@JoinColumn(name = "child_num")
 	private Child child;
 
+
+	public Notification(Parent parent, Child child, String message, String category, String senderType) {
+		this.message = message;
+		this.category = category;
+		this.senderType = senderType;
+		this.parent = parent;
+		this.child = child;
+	}
+	
+    public NotificationResponseDto toNotification( Notification notification) {
+    	
+    	return NotificationResponseDto.builder()
+    			.notiNum(notification.getNotiNum()) // notiNum을 추가
+    			.parentNum(notification.getParent().getParentNum())
+    			.childNum(notification.getChild().getChildNum())
+    			.message(notification.getMessage())
+    			.category(notification.getCategory())
+    			.senderType(notification.getSenderType())
+    			.build();
+    			
+    }
+
 	@Override
 	public String toString() {
-		return "Notification [Nnum=" + notiNum + ", message=" + message + ", category=" + category + ", parent=" + parent
-				+ ", child=" + child + ", getCreatedAt()=" + getCreatedAt() + ", getModifiedAt()=" + getModifiedAt()
-				+ "]";
+		return "Notification [notiNum=" + notiNum + ", message=" + message + ", category=" + category + ", senderType="
+				+ senderType + ", parent=" + parent + ", child=" + child + "]";
 	}
 	
 }

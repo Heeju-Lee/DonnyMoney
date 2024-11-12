@@ -1,5 +1,6 @@
 package com.web.spring.dto.child.wish;
 
+import com.web.spring.entity.IsFinish;
 import com.web.spring.entity.Wish;
 
 import jakarta.validation.constraints.NotNull;
@@ -32,15 +33,15 @@ public class WishRequestDto {
 	private int savingAmt;
 	
 	@NotNull
-	private Boolean isFinish;
+	private IsFinish isFinish;
 	
-	public Wish toWish(WishRequestDto wishRequestDto) {
+	public Wish toWish(WishRequestDto wishRequestDto, String imgUrl) {
 		
 		return Wish.builder()
-					.img(wishRequestDto.getImg())
+					.img(imgUrl)
 					.name(wishRequestDto.getName())
 					.price(wishRequestDto.getPrice())
-	                .isFinish(false)
+	                .isFinish(IsFinish.INCOMPLETE)
 					.build();
 	}
 

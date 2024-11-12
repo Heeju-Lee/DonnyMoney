@@ -38,6 +38,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
@@ -104,26 +108,34 @@
 		<dependency>
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>	
-		<!-- ModelMapper 추가 -->
-		<dependency>
-    	  <groupId>org.modelmapper</groupId>
-   		  <artifactId>modelmapper</artifactId>
-    	  <version>3.2.1</version>
-		</dependency>
-		<!-- Map Struct 추가-->
-		<dependency>
-    	<groupId>org.mapstruct</groupId>
-    	<artifactId>mapstruct</artifactId>
-    	<version>${org.mapstruct.version}</version>
-		</dependency>
-		<dependency>
-   		 <groupId>org.mapstruct</groupId>
-   		 <artifactId>mapstruct-processor</artifactId>
-    	<version>${org.mapstruct.version}</version>
 		</dependency>
 
-		
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.3</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.3</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10.1</version>
+		</dependency>
 
 		<!-- swagger-->
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
@@ -133,33 +145,93 @@
 			<version>2.5.0</version>
 		</dependency>
 
+        <!-- AWS S3 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-aws</artifactId>
+            <version>2.0.1.RELEASE</version>
+        </dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-aws</artifactId>
+		    <version>2.0.1.RELEASE</version>
+		</dependency>
+
+		<!--jaxb. bind 필요 (multipartfile을 위해) 중복 관리로 버전관리 필요성 없음-->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jaxb</groupId>
+		    <artifactId>jaxb-runtime</artifactId>
+		</dependency>
+		
+        <!-- Youtube API 의존성 -->
+        <!-- Google API와 통신하기 위한 Java용 클라이언트 라이브러리 -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.33.0</version>
+        </dependency>
+        <!-- OAuth 2.0 인증 프로토콜을 지원하기 위한 Jetty 구현을 포함하는 라이브러리 -->
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.23.0</version>
+        </dependency>
+        <!-- YouTube Data API를 사용할 수 있게 해주는 Google API 클라이언트 라이브러리 -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-youtube</artifactId>
+            <version>v3-rev20230816-2.0.0</version>
+        </dependency>
+        <!-- Google HTTP Client 라이브러리의 Jackson2 모듈을 사용하여 JSON 데이터를 처리하는 기능을 제공하는 라이브러리 -->
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson2</artifactId>
+            <version>1.39.2</version>
+        </dependency>
+		
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-				<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-compiler-plugin</artifactId>
-		<configuration>
-			<source>1.8</source>
-			<target>1.8</target>
-			<annotationProcessorPaths>
-				<path>
-					<groupId>org.mapstruct</groupId>
-					<artifactId>mapstruct-processor</artifactId>
-					<version>${org.mapstruct.version}</version>
-				</path>
-			</annotationProcessorPaths>
-			  <compilerArgs>
-                    <arg>-parameters</arg>
-                </compilerArgs>
-		</configuration>
-	</plugin>
-		</plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- JUnit 5를 위한 Maven Surefire Plugin 설정 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <useJUnitPlatform>true</useJUnitPlatform> <!-- JUnit 5 플랫폼 사용 설정 -->
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 
 </project>

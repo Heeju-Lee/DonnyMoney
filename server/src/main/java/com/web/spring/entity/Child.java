@@ -2,8 +2,10 @@ package com.web.spring.entity;
 
 import java.util.List;
 
+import com.web.spring.dto.child.ChildRequestDto;
 import com.web.spring.global.audit.Auditable;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import jakarta.persistence.CascadeType;
@@ -21,6 +23,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @NoArgsConstructor
@@ -28,7 +31,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Child extends Auditable{
+public class Child  extends Auditable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +44,8 @@ public class Child extends Auditable{
 	private String birthdate;
 	private String phone;
 	private String email;
+    private String role;
+
 	
 	@Column(nullable = true)
 	private int point;
@@ -84,22 +89,21 @@ public class Child extends Auditable{
 
 	@Override
 	public String toString() {
-
 		return "Child{" +
-				"qHistory=" + qHistory +
-				", qGoverment=" + qGoverment +
+				"childNum=" + childNum +
+				", memberFields=" + super.toString() +
+				", point=" + point +
+				", qExchangeRate=" + qExchangeRate +
 				", qInvestment=" + qInvestment +
 				", qWord=" + qWord +
-				", qExchangeRate=" + qExchangeRate +
-				", point=" + point +
-				", email='" + email + '\'' +
-				", phone='" + phone + '\'' +
-				", birthdate='" + birthdate + '\'' +
-				", name='" + name + '\'' +
-				", pwd='" + pwd + '\'' +
-				", id='" + id + '\'' +
-				", childNum=" + childNum +
+				", qGoverment=" + qGoverment +
+				", qHistory=" + qHistory +
+				", parent=" + parent +
 				'}';
-
 	}
+
+	
+	
+	
+
 }

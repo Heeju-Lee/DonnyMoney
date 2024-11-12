@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  *
  *
  * 브라우져 실행
- * http://localhost:9000/swagger-ui/index.html
+ * http://localhost:9999/swagger-ui/index.html
  * */
 @Configuration
 public class SwaggerConfig {

@@ -20,8 +20,8 @@ import lombok.Builder;
 @Builder
 public class PlanRequestDto {
 	
-	@NotNull
-	private Long childNum;
+//	@NotNull
+//	private Long childNum;
 	
 	@NotNull
 	private int shopping;

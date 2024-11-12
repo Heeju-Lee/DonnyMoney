@@ -37,7 +37,7 @@ public class ChildRequestDto {
 	@NotNull
 	private Long parentNum;
 	
-	public Child toChild(ChildRequestDto childRequestDto) {
+public Child toChild(ChildRequestDto childRequestDto) {
 		
 		return Child.builder()
 				.id(childRequestDto.getId())
@@ -48,5 +48,4 @@ public class ChildRequestDto {
 				.email(childRequestDto.getEmail())
 				.build();
 	}
-
 }

@@ -38,16 +38,16 @@ public class Quiz {
 	
 	private String description;
 	
-	@Lob
-	private String videoUrl; 
 	
 	private String category;
+
 
 	@Override
 	public String toString() {
 		return "Quiz [quizNum=" + quizNum + ", quiz=" + quiz + ", answer=" + answer + ", description=" + description
-				+ ", videoUrl=" + videoUrl + ", category=" + category + "]";
+				+ ", category=" + category + "]";
 	}
-	
+
+
 	
 }
