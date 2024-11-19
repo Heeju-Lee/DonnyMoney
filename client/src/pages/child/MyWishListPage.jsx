@@ -7,6 +7,8 @@ const MyWishListPage = () => {
     <>
       <Title>나의 꿈창고</Title>
       <Activewish />
+
+      {/* 성공한 위시 목록 */}
     </>
   );
 };

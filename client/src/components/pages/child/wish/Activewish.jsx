@@ -22,15 +22,23 @@ const Activewish = (imgSrc) => {
   const [uploading, setUploading] = useState(false); // 업로드 로딩 상태
   const [wishDetail, setWishDetail] = useState(false); //디테일창 상태
   const [cards, setCards] = useState([]); // 슬릭 카드  수 상태
+<<<<<<< HEAD
   // const [selectedCard, setSelectedCard] = useState(null); 
   
+=======
+  const [selectedCard, setSelectedCard] = useState(null); // 선택된 카드 상태
+>>>>>>> 398e0c7e29ceba6d4393df8a2f2255828c943b1c
 
-  const showSlick =()=>{
+  const localStorageAuth = localStorage.getItem("Authorization");
+
+  // 위시 목록 보기
+  const showSlick = () => {
+    console.log("Activewish - showSlick ...token : ", localStorageAuth);
     axios({
       method: "GET",
-      url: `http://localhost:9999/children/wishes/active`,
+      url: `${process.env.REACT_APP_BASE_URL}/children/wishes/active`,
       headers: {
-        Authorization: token, // Authorization 헤더에 토큰 추가
+        Authorization: localStorageAuth, // Authorization 헤더에 토큰 추가
         "Content-Type": "multipart/form-data", // 데이터가 multipart/form-data 형식임을 명시
       },
     })
@@ -41,17 +49,19 @@ const Activewish = (imgSrc) => {
           itemName: item.name, // 아이템 이름
           itemPrice: item.price, // 아이템 가격
           progressRate: (item.savingAmt / item.price) * 100 || 0, // 진행률 계산
-          savingAmt:item.savingAmt, //저축한 돈
+          savingAmt: item.savingAmt, //저축한 돈
         }));
         setCards(formattedData);
       })
       .catch((err) => {
         console.error("위시 등록 실패:", err);
       });
-  }
+  };
 
   //카드 넣기...
-  const handleSubmitWish =async () => {
+  const handleSubmitWish = async () => {
+    console.log("Activewish - handleSubmitWish ... token ", localStorageAuth);
+
     if (!file || !wishName || !wishPrice) {
       alert("모든 필드를 입력해 주세요."); // 파일과 텍스트 필드가 모두 채워졌는지 확인
       return;
@@ -72,37 +82,36 @@ const Activewish = (imgSrc) => {
         formData,
         {
           headers: {
-            Authorization: token, // Authorization 헤더에 토큰 추가
+            Authorization: localStorageAuth, // Authorization 헤더에 토큰 추가
             "Content-Type": "multipart/form-data", // 데이터 형식 명시
           },
         }
       );
-  
-      console.log("위시 등록 성공:", response.data);
-         // 데이터가 배열인지 객체인지 확인 후 처리
-    if (Array.isArray(response.data)) {
-      const newCards = response.data.map(item => ({
-        id: item.wishNum,
-        imgSrc: item.img,
-        itemName: item.name,
-        itemPrice: item.price,
-        progressRate: 0,
-        savingAmt:item.savingAmt,
-      }));
-      setCards(prevCards => [...prevCards, ...newCards]);
-    } else {
-      const newCard = {
-        id: response.data.wishNum,
-        imgSrc: response.data.img,
-        itemName: response.data.name,
-        itemPrice: response.data.price,
-        progressRate: 0,
-        savingAmt:response.data.savingAmt,
-      };
-      setCards(prevCards => [...prevCards, newCard]);
-    }
 
-      
+      console.log("위시 등록 성공:", response.data);
+      // 데이터가 배열인지 객체인지 확인 후 처리
+      if (Array.isArray(response.data)) {
+        const newCards = response.data.map((item) => ({
+          id: item.wishNum,
+          imgSrc: item.img,
+          itemName: item.name,
+          itemPrice: item.price,
+          progressRate: 0,
+          savingAmt: item.savingAmt,
+        }));
+        setCards((prevCards) => [...prevCards, ...newCards]);
+      } else {
+        const newCard = {
+          id: response.data.wishNum,
+          imgSrc: response.data.img,
+          itemName: response.data.name,
+          itemPrice: response.data.price,
+          progressRate: 0,
+          savingAmt: response.data.savingAmt,
+        };
+        setCards((prevCards) => [...prevCards, newCard]);
+      }
+
       // 요청 성공 후 상태 초기화 및 모달 닫기
       setWishName(""); // 위시 이름 초기화
       setWishPrice(""); // 위시 가격 초기화
@@ -139,20 +148,6 @@ const Activewish = (imgSrc) => {
     }
   };
 
-  // // 카드 추가 핸들러
-  // const addCard = () => {
-  //   const newCard = {
-  //     id: cards.length + 1,
-  //     content: `Card ${cards.length + 1}`,
-  //   };
-  //   setCards([...cards, newCard]); // 기존 카드에 새로운 카드 추가
-  // };
-  // // 카드 삭제 핸들러
-  // const removeCard = () => {
-  //   if (cards.length > 0) {
-  //     setCards(cards.slice(0, -1)); // 마지막 카드 제거
-  //   }
-  // };
   // Slick Slider 설정 옵션
   const settings = {
     dots: true, // 하단 점 네비게이션 활성화
@@ -169,26 +164,26 @@ const Activewish = (imgSrc) => {
       },
     ],
   };
-    // 카드 클릭 핸들러
+  // 카드 클릭 핸들러
   const showDetail = (card) => {
     setSelectedCard(card); // 클릭된 카드 데이터 설정
     setWishDetail(true); // 디테일 창 열기
   };
+
   // WishDetailBox 업데이트
-  const handleSelectCard = (updateData) =>{
-    console.log("handleSelectCard =========> ", updateData);
-    /////////여기 상태를 수정해야함
-    setSelectedCard({...updateData});
-  }
+  const handleSelectCard = (updateData) => {
+    console.log("부모의 handleSelectCard 호출: ", updateData);
+
+    setSelectedCard((prev) => ({
+      ...prev,
+      ...updateData,
+    }));
+  };
+
   useEffect(() => {
-    showSlick() 
+    console.log("Activewish - useEffect ...");
+    showSlick();
   }, []);
-
-  useEffect(() => {
-    console.log("Selected card updated:", selectedCard);
-    // 이 로직이 정말 필요한지 확인 후 사용
-}, [selectedCard]);
-
 
   return (
     <>
@@ -242,13 +237,22 @@ const Activewish = (imgSrc) => {
               imgSrc={card.imgSrc}
               itemName={card.itemName}
               itemPrice={card.itemPrice}
-              progressRate={card.progressRate}
+              $progressRate={card.progressRate}
               onClick={() => showDetail(card)}
             />
           ))}
         </Slider>
       </div>
+<<<<<<< HEAD
       {wishDetail && <WishDetailBox selectedCard={selectedCard}  onCardUpdate={handleSelectCard}  />}
+=======
+      {wishDetail && (
+        <WishDetailBox
+          selectedCard={selectedCard}
+          onSendData={handleSelectCard}
+        />
+      )}
+>>>>>>> 398e0c7e29ceba6d4393df8a2f2255828c943b1c
     </>
   );
 };
@@ -258,7 +262,7 @@ const InsertPreview = styled.img`
   height: 20vh;
   border: 1px solid #ccc;
   border-radius: 10px;
-  margin-buttom: 20px;
+  margin-bottom: 20px;
 `;
 const InsertWish = styled.button`
   background-color: #4829d7;

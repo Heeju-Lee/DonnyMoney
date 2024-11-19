@@ -64,7 +64,11 @@ const LoginForm = () => {
   return (
     <LoginFormContainer>
       <ImgContainer>
-        <span>도니머니와 함께 올바른 경제 습관을 길러봐요!</span>
+        <span>
+          도니머니와 함께
+          <br />
+          올바른 경제 습관을 길러봐요!
+        </span>
         <img src="images/donnyFamily.png" alt="Donny Family" />
       </ImgContainer>
 
@@ -117,8 +121,10 @@ const LoginForm = () => {
 
 const LoginFormContainer = styled.div`
   display: flex;
-  width: 100%;
-  height: 800px;
+  margin: 0 auto;
+  width: 90%;
+  /* height: 700px; */
+
   align-items: center;
   justify-content: center;
   border-radius: 20px;
@@ -136,16 +142,21 @@ const ImgContainer = styled.div`
   background-color: #c8bef3;
   position: relative;
 
+  padding: 3% 0;
+
   img {
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    /* height: 50%; */
+    max-width: 450px;
+    /* max-height: 400px; */
     margin: 40px;
     z-index: 2;
   }
   span {
     text-align: center;
-    font-size: 25px;
-    color: black;
+    font-size: 28px;
+    /* color: black; */
+    color: #ffffff;
     z-index: 2;
   }
 
@@ -154,8 +165,10 @@ const ImgContainer = styled.div`
     position: absolute;
     top: 60%;
     left: 50%;
-    width: 500px;
-    height: 400px;
+    width: 95%;
+    height: 60%;
+    max-width: 500px;
+    max-height: 400px;
     background-color: white;
     border-radius: 50%;
     transform: translate(-50%, -50%); /* Center the circle */

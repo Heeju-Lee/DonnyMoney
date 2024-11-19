@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { formatCurrency } from "../../services/GlobalFunction";
 
 // 위시 목록의 아이템
 export const WishItemCard = ({
@@ -50,7 +51,7 @@ export const WishItemCard = ({
         )}
         <ItemInfo>
           <ItemName>{itemName || "no name"}</ItemName>
-          <ItemPrice>{itemPrice.toLocaleString() || 0}원</ItemPrice>
+          <ItemPrice>{formatCurrency(itemPrice) || 0}원</ItemPrice>
         </ItemInfo>
       </ItemDetail>
     </Card>
