@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetcParentNotifications = async (memberNo, authorization) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/notification/parent/${memberNo}`,
+      `/notification/parent/${memberNo}`,
       {
         headers: {
           Authorization: authorization,
@@ -22,7 +22,7 @@ export const fetcParentNotifications = async (memberNo, authorization) => {
 export const fetchChildNotifications = async (memberNo, authorization) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/notification/child/${memberNo}`,
+      `/notification/child/${memberNo}`,
       {
         headers: {
           Authorization: authorization,
@@ -41,7 +41,7 @@ export const fetchChildNotifications = async (memberNo, authorization) => {
 export const updateRead = async (notiNum, authorization) => {
   try {
     await axios.patch(
-      `${process.env.REACT_APP_BASE_URL}/notification/${notiNum}/read`,
+      `/notification/${notiNum}/read`,
       null,
       {
         headers: {

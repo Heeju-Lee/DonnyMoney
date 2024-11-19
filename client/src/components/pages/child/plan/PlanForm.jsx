@@ -104,7 +104,7 @@ const PlanForm = () => {
       try {
         const response = await axios({
           method: "GET",
-          url: `http://localhost:9999/children/show/plans?year=${currentYear}&month=${currentMonth}`,
+          url: `/children/show/plans?year=${currentYear}&month=${currentMonth}`,
           headers: {
             Authorization: token,
             "Content-Type": "application/json",
@@ -114,6 +114,7 @@ const PlanForm = () => {
 
         // 가져온 데이터를 PlanContext와 formData에 설정
         const planData = response.data;
+        console.log("초기값으로 가져온 planData", planData);
         setPlan(planData);
         setFormData({
           food: planData.food || 0,
@@ -156,22 +157,6 @@ const PlanForm = () => {
         <FormG>
           <FormBox>
             <FormImg
-              src={`${process.env.PUBLIC_URL}/icons/food.png`}
-              alt="food"
-            />
-            <FormTitle>음식</FormTitle>
-          </FormBox>
-          <FormInput
-            type="text"
-            name="food"
-            value={Number(formData.food).toLocaleString("ko-KR")}
-            onChange={handleInputChange}
-          />
-        </FormG>
-
-        <FormG>
-          <FormBox>
-            <FormImg
               src={`${process.env.PUBLIC_URL}/icons/cvs.png`}
               alt="cvs"
             />
@@ -184,7 +169,21 @@ const PlanForm = () => {
             onChange={handleInputChange}
           />
         </FormG>
-
+        <FormG>
+          <FormBox>
+            <FormImg
+              src={`${process.env.PUBLIC_URL}/icons/food.png`}
+              alt="food"
+            />
+            <FormTitle>음식</FormTitle>
+          </FormBox>
+          <FormInput
+            type="text"
+            name="food"
+            value={Number(formData.food).toLocaleString("ko-KR")}
+            onChange={handleInputChange}
+          />
+        </FormG>
         <FormG>
           <FormBox>
             <FormImg

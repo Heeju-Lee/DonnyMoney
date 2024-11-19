@@ -36,7 +36,7 @@ const LoginForm = () => {
     console.log("Sending login request with data: ", member); // 요청 데이터 확인
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_BASE_URL}/login`,
+      url: `/login`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -60,7 +60,6 @@ const LoginForm = () => {
         setMember({ username: "", password: "" });
       });
   };
-
   return (
     <LoginFormContainer>
       <ImgContainer>
