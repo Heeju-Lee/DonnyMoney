@@ -310,7 +310,8 @@ const Form = styled.form`
     height: 50px;
     border-radius: 25px;
     border: none;
-    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    /* background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f); */
+    background-color: #9774fb;
     background-size: 200%;
     font-size: 1.2rem;
     color: #fff;

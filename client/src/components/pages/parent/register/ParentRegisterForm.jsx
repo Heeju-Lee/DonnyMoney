@@ -205,7 +205,7 @@ export default RegisterPage;
 
 const Container = styled.div`
   width: 600px;
-  margin: 50px auto;
+  margin: 0 auto;
 `;
 
 const ProgressBar = styled.div`
