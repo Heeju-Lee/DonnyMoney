@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Activewish from "../../components/pages/child/wish/Activewish";
+import { FinishWishList } from "../../components/pages/child/register/FinishWishList";
 
 const MyWishListPage = () => {
   return (
@@ -9,6 +10,7 @@ const MyWishListPage = () => {
       <Activewish />
 
       {/* 성공한 위시 목록 */}
+      <FinishWishList />
     </>
   );
 };
