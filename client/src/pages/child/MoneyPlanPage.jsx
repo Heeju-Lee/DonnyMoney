@@ -208,7 +208,7 @@ const MoneyPlanPage = () => {
   };
   // 이달의 플랜 가져오기
   const getplan = (e) => {
-    e.preventDefault(); // 폼 제출 시 새로고침 방지
+    if (e) e.preventDefault(); // 폼 제출 시 새로고침 방지
     setIsLoading(true);
     setErrorMessage(null);
     axios({

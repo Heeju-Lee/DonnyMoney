@@ -4,8 +4,9 @@ import { Modal } from "../../../commons/Modal";
 import axios from "axios";
 import { AuthContext } from "../../../../App";
 import {formatCurrency} from "../../../../services/GlobalFunction";
-
-const WishDetailBox = ({ selectedCard, handleSelectCard }) => {
+import { PlanContext } from "../../../../pages/context/MoneyPlanContext";
+const WishDetailBox = () => {
+  const { selectedCard, setSelectedCard } = useContext(PlanContext);
   const [isModalOpen, setModalOpen] = useState(false); // 모달 열리고 닫고 상태 보관
   const [savingAmt, setSavingAmt] = useState(0); // 사용자가 입력한 저축 금액
   const [currentSaving, setCurrentSaving] = useState(0); // 현재 아이가 가진돈
@@ -26,7 +27,7 @@ const WishDetailBox = ({ selectedCard, handleSelectCard }) => {
   // 부모에 데이터 전달
   const onHandleData = (data) => {
     // updateParentState(data);
-    handleSelectCard(data)
+    // handleSelectCard(data)
   }
 
 //   const fetchWishData = async () => {
@@ -88,7 +89,7 @@ const WishDetailBox = ({ selectedCard, handleSelectCard }) => {
         }
       );
   
-      console.log("저축 성공:", response.data);
+      console.log("저축 성공 :", response.data);
   
       // 성공 후 상태 업데이트
       // setCurrentSaving((prev) => prev + parseInt(selectedCard.savingAmt, 10));
@@ -101,12 +102,20 @@ const WishDetailBox = ({ selectedCard, handleSelectCard }) => {
       
       
       // console.log("Saving money successful!");
-      handleSelectCard(response.data); // 데이터 갱신
+      // handleSelectCard(response.data); // 데이터 갱신
 
       // console.log("지금 선택된 wish 업데이트 시",selectedCard?.id);
+      setSelectedCard({
+        id: response.data.wishNum,
+        imgSrc: response.data.img,
+        itemName: response.data.name,
+        itemPrice: response.data.price,
+        progressRate: (response.data.savingAmt / response.data.price) * 100,
+        savingAmt: response.data.savingAmt, 
+      }); // 데이터 갱신
       setModalOpen(false); // 모달 닫기
-      
-
+      setSavingAmt(0);
+      console.log("지금 선택된 wish 업데이트 완료후",selectedCard?.id);
     } catch (error) {
       console.error("저축 실패:", error);
       if (error.response?.status === 403) {
@@ -115,7 +124,7 @@ const WishDetailBox = ({ selectedCard, handleSelectCard }) => {
         alert("저축에 실패했습니다. 다시 시도해 주세요.");
       }
     }
-  };      console.log("지금 선택된 wish 업데이트 완료후",selectedCard?.id);
+  };      
   
 // 나의 포인트
 const callMyMoney = async () => {
@@ -174,10 +183,10 @@ const callMyMoney = async () => {
           <DetailText>저축가능한 돈 : {formatCurrency(currentSaving)}</DetailText>
           <DetailText>넣을 돈</DetailText>
           <FormInput 
-  type="text" 
-  value={savingAmt} 
-  onChange={(e) => setSavingAmt(e.target.value)} 
-/>
+            type="text" 
+            value={savingAmt} 
+            onChange={(e) => setSavingAmt(e.target.value)} 
+          />
           <CollectMoney onClick={ handleCollectMoney }>돈모으기</CollectMoney>
         </Modal>
       )}

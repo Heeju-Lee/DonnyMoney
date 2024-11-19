@@ -8,8 +8,9 @@ import axios from "axios";
 import { AuthContext } from "../../../../App";
 import { Modal } from "../../../commons/Modal";
 import WishDetailBox from "./WishDetailBox";
-
+import { PlanContext } from "../../../../pages/context/MoneyPlanContext";
 const Activewish = (imgSrc) => {
+  const { selectedCard, setSelectedCard } = useContext(PlanContext);
   const { memberNo, name, authorization } = useContext(AuthContext);
   const token = authorization;
   const [isModalOpen, setModalOpen] = useState(false); // 모달 열리고 닫고 상태 보관
@@ -21,7 +22,7 @@ const Activewish = (imgSrc) => {
   const [uploading, setUploading] = useState(false); // 업로드 로딩 상태
   const [wishDetail, setWishDetail] = useState(false); //디테일창 상태
   const [cards, setCards] = useState([]); // 슬릭 카드  수 상태
-  const [selectedCard, setSelectedCard] = useState(null); // 선택된 카드 상태
+  // const [selectedCard, setSelectedCard] = useState(null); 
   
 
   const showSlick =()=>{
@@ -247,7 +248,7 @@ const Activewish = (imgSrc) => {
           ))}
         </Slider>
       </div>
-      {wishDetail && <WishDetailBox selectedCard={selectedCard}  updateParentState={handleSelectCard}  />}
+      {wishDetail && <WishDetailBox selectedCard={selectedCard}  onCardUpdate={handleSelectCard}  />}
     </>
   );
 };

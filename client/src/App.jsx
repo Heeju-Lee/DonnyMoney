@@ -3,9 +3,10 @@ import { GlobalStyle } from "./styles/GlobalStyle";
 import Header from "./components/layouts/Header";
 import Navirouter from "./Navirouter";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import Layout from "./components/layouts/Layout";
+import WishProvider from "./pages/context/SelectWishContext";
 import PlanProvider from "./pages/context/MoneyPlanContext";
+import Layout from "./components/layouts/Layout";
+
 // import PlanReport from "./components/pages/parent/PlanReport";
 // import MonthlyReportPage from "./pages/parent/MonthlyReportPage";
 
@@ -81,7 +82,8 @@ createContex 를 이용하여 서로 공유할수 있도록 한다.
     <LogingedContext.Provider
       value={{ isLoggedIn: isLoggedIn, onLoggedChange: handleLoggedChange }}
     >
-      <PlanProvider>
+        {/* <WishProvider> */}
+        <PlanProvider>
         <AuthContext.Provider value={userInfo}>
           <div>
             {/* 전역 스타일 */}
@@ -92,7 +94,8 @@ createContex 를 이용하여 서로 공유할수 있도록 한다.
             <Navirouter />
           </div>
         </AuthContext.Provider>
-      </PlanProvider>
+        </PlanProvider>
+        {/* </WishProvider> */}
     </LogingedContext.Provider>
   );
 }
