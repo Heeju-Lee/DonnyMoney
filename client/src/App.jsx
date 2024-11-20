@@ -3,9 +3,9 @@ import { GlobalStyle } from "./styles/GlobalStyle";
 import Header from "./components/layouts/Header";
 import Navirouter from "./Navirouter";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import Layout from "./components/layouts/Layout";
 import PlanProvider from "./pages/context/MoneyPlanContext";
+import Layout from "./components/layouts/Layout";
+
 // import PlanReport from "./components/pages/parent/PlanReport";
 // import MonthlyReportPage from "./pages/parent/MonthlyReportPage";
 

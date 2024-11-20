@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react"; 
-import axios from "axios";
+import React, { createContext, useState } from "react"; 
+
 
 
 const PlanContext = createContext();
@@ -18,7 +18,7 @@ const PlanProvider = ({ children }) => {
   const [selectedYear, setSelectedYear] = useState(0); // 연도 상태
   const [selectedMonth, setSelectedMonth] = useState(0); // 월 상태
   const [overlayStatus, setOverlayStatus] = useState(null); 
-  
+ 
   return (
     <PlanContext.Provider value={{ plan, setPlan,selectedMonth, setSelectedMonth,selectedYear, setSelectedYear,overlayStatus, setOverlayStatus }}>
       {children}
@@ -26,8 +26,7 @@ const PlanProvider = ({ children }) => {
   );
 };
 
-// Default export PlanProvider
 export default PlanProvider;
 
-// Named export PlanContext (기존대로)
+
 export { PlanContext };

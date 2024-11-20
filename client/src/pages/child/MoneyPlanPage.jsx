@@ -8,6 +8,7 @@ import { PlanContext } from "../context/MoneyPlanContext";
 import axios from "axios";
 import { AuthContext } from "../../App";
 import { sendNotificationToParent } from "../../services/NotificationService";
+
 const TitleWapper = styled.div`
   display: flex;
   margin-top: 30px;
@@ -78,7 +79,27 @@ const OverlayMessage = styled.h1`
   padding: 20px;
   border-radius: 8px;
 `;
-
+const ModalBtn = styled.button`
+  background-color: #4829d7;
+  color: white;
+  font-style: bold;
+  font-size: 1.2rem;
+  border: 2px solid #4829d7;
+  border-radius: 10px;
+  width: 8vw;
+  height: 5.8vh;
+  font-weight: bold;
+  margin-left: 30px;
+`;
+const ModalBtnWapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+`;
+const ModalTitle = styled.h3`
+  margin-bottom: 80px;
+`;
+const ModalTextBox = styled.div``;
 const MoneyPlanPage = () => {
   const [isModalOpen, setModalOpen] = useState(false); // 모달 열림/닫힘 상태
   const {
@@ -134,6 +155,7 @@ const MoneyPlanPage = () => {
 
   const handleSend = () => {
     // 모달을 열기 전에 Context 값을 기반으로 동기화
+    console.log("모달 열기전 plan", plan);
     setPlan([
       { label: "쇼핑", value: plan.shopping ?? 0 },
       { label: "교통", value: plan.transport ?? 0 },
@@ -142,25 +164,10 @@ const MoneyPlanPage = () => {
       { label: "기타", value: plan.others ?? 0 },
       { label: "저축", value: plan.saving ?? 0 },
     ]);
+    console.log("모달 연 후  plan", plan);
     setModalOpen(true); // "부모님한테 보내기" 버튼 클릭 시 모달 열기
   };
-  // Context 값을 기반으로 서버에 전송할 데이터 구성
-  const dataToSend = {
-    shopping: plan.shopping
-      ? parseInt(plan.shopping.toString().replace(/,/g, ""), 10)
-      : 0,
-    transport: plan.transport
-      ? parseInt(plan.transport.toString().replace(/,/g, ""), 10)
-      : 0,
-    cvs: plan.cvs ? parseInt(plan.cvs.toString().replace(/,/g, ""), 10) : 0,
-    food: plan.food ? parseInt(plan.food.toString().replace(/,/g, ""), 10) : 0,
-    others: plan.others
-      ? parseInt(plan.others.toString().replace(/,/g, ""), 10)
-      : 0,
-    saving: plan.saving
-      ? parseInt(plan.saving.toString().replace(/,/g, ""), 10)
-      : 0,
-  };
+  //console.log("db로 보낼 데이터", dataToSend);
   console.log("MoneyPlanPage plan : ", plan);
   console.log("MoneyPlanPage dataValues : ", plan);
 
@@ -173,17 +180,31 @@ const MoneyPlanPage = () => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     setIsLoading(true);
     setErrorMessage(null);
-
+    console.log("데이터 보내기 전의 plan", plan);
+    // 요청할 데이터를 변환하는 함수
+    const transformPlanToRequestFormat = () => {
+      return {
+        shopping: plan.find((item) => item.label === "쇼핑")?.value ?? 0,
+        transport: plan.find((item) => item.label === "교통")?.value ?? 0,
+        cvs: plan.find((item) => item.label === "편의점")?.value ?? 0,
+        food: plan.find((item) => item.label === "음식")?.value ?? 0,
+        others: plan.find((item) => item.label === "기타")?.value ?? 0,
+        saving: plan.find((item) => item.label === "저축")?.value ?? 0,
+      };
+    };
+    const requestBody = transformPlanToRequestFormat();
+    console.log("보낼 데이터를 다시 확인하기", requestBody);
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_BASE_URL}/children/plans?year=${currentYear}&month=${currentMonth}`,
-      data: dataToSend,
+      url: `/children/plans?year=${currentYear}&month=${currentMonth}`,
+      data: requestBody,
       headers: {
         Authorization: token, // Authorization 헤더에 토큰 추가
         "Content-Type": "application/json", // 데이터가 JSON 형식임을 명시
       },
     })
       .then((res) => {
+        console.log("dataToSend=======", plan);
         console.log("axios res", res);
         setModalOpen(false); // 모달 닫기
         setIsLoading(false); // 로딩 상태 해제
@@ -204,17 +225,16 @@ const MoneyPlanPage = () => {
         setErrorMessage("전송 중 오류가 발생했습니다. 다시 시도해주세요.");
         setOverlayStatus(false); //수정 불가 창업데이트
       });
-    console.log("MoneyPlanPage dataToSend : ", dataToSend); // 전송할 데이터 확인
+    //console.log("MoneyPlanPage dataToSend : ", dataToSend); // 전송할 데이터 확인
   };
   // 이달의 플랜 가져오기
   const getplan = (e) => {
-    // e.preventDefault(); // 폼 제출 시 새로고침 방지
+    if (e) e.preventDefault(); // 폼 제출 시 새로고침 방지
     setIsLoading(true);
     setErrorMessage(null);
     axios({
       method: "GET",
-      url: `http://localhost:9999/children/show/plans?year=${currentYear}&month=${currentMonth}`,
-      data: dataToSend,
+      url: `/children/show/plans?year=${currentYear}&month=${currentMonth}`,
       headers: {
         Authorization: token, // Authorization 헤더에 토큰 추가
         "Content-Type": "application/json", // 데이터가 JSON 형식임을 명시
@@ -224,12 +244,12 @@ const MoneyPlanPage = () => {
         console.log("axios res------", res);
         const planData = res.data;
         setPlan([
-          { label: "쇼핑", value: planData.shopping ?? 0 },
-          { label: "교통", value: planData.transport ?? 0 },
           { label: "편의점", value: planData.cvs ?? 0 },
           { label: "음식", value: planData.food ?? 0 },
-          { label: "기타", value: planData.others ?? 0 },
+          { label: "쇼핑", value: planData.shopping ?? 0 },
+          { label: "교통", value: planData.transport ?? 0 },
           { label: "저축", value: planData.saving ?? 0 },
+          { label: "기타", value: planData.others ?? 0 },
         ]);
         setIsLoading(false);
         console.log("머니플랜페이지의 ", plan);
@@ -246,7 +266,10 @@ const MoneyPlanPage = () => {
   const isMatchingDate =
     selectedYear === currentYear && selectedMonth === currentMonth;
   console.log("선택된 날짜", selectedYear, selectedMonth);
-
+  // 숫자를 원화 형식으로 포맷 (예: 1,000,000)
+  const formatCurrency = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
   return (
     <>
       <TitleWapper>
@@ -280,22 +303,22 @@ const MoneyPlanPage = () => {
       </BtnWapper>
       {/* 모달이 열렸을 때만 표시 */}
       {isModalOpen && (
-        <Modal width="500px" height="400px" padding="20px">
-          <h3>보낼 계획 내용</h3>
-          <div>
+        <Modal width="500px" height="600px" padding="20px">
+          <ModalTitle>보낼 계획 내용</ModalTitle>
+          <ModalTextBox>
             {/* dataValues 배열을 순회하며 데이터를 표시 */}
             {plan.map((item, index) => (
               <p key={index}>
-                <strong>{item.label}:</strong> {item.value} 원
+                <strong>{item.label}:</strong> {formatCurrency(item.value)}원
               </p>
             ))}
-          </div>
-          <BtnWapper>
-            <button onClick={() => setModalOpen(false)}>닫기</button>
-            <button onClick={submitJoin} disabled={isLoading}>
+          </ModalTextBox>
+          <ModalBtnWapper>
+            <ModalBtn onClick={() => setModalOpen(false)}>닫기</ModalBtn>
+            <ModalBtn onClick={submitJoin} disabled={isLoading}>
               {isLoading ? "전송 중..." : "전송"}
-            </button>
-          </BtnWapper>
+            </ModalBtn>
+          </ModalBtnWapper>
         </Modal>
       )}
     </>

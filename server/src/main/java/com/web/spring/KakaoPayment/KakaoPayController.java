@@ -55,7 +55,7 @@ public class KakaoPayController {
 
         //redirectAttributes.addAttribute("ordId", ordId);
 
-        response.sendRedirect("http://localhost:3000/order/pay/completed/{ordId}");
+        response.sendRedirect("http://localhost:3000/agreement");
     }
 
     // 결제 취소시 실행 url

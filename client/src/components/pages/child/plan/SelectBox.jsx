@@ -110,7 +110,7 @@ const SelectBox = () => {
 
     axios({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_URL}/children/show/plans?year=${year}&month=${month}`,
+      url: `/children/show/plans?year=${year}&month=${month}`,
       headers: {
         Authorization: token,
         "Content-Type": "application/json",
