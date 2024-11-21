@@ -31,11 +31,11 @@ const MonthlyReportPage = () => {
         <>
           <ContainAll>
             <SelectOptionNav onHandleData={handleChildData} />
+
             <PlanReport
               childNum={selectOption.childNum}
               year={selectOption.year}
               month={selectOption.month}
-              childName={selectOption.childName}
             />
           </ContainAll>
           <SendMessage childNum={selectOption.childNum} />
