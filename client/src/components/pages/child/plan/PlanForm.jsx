@@ -81,9 +81,52 @@ const FormG = styled.div`
   align-items: center;
   padding: 10px;
 `;
+const PlusBtn = styled.button`
+  background-color: #4829d7;
+  color: white;
+  font-style: bold;
+  font-size: 1.2rem;
+  border: 2px solid #4829d7;
+  border-radius: 10px;
+  width: 12 vw;
+  height: 5.8vh;
+  margin-top: 1vh;
+  font-weight: bold;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 5px 0 8px;
+`;
+const Btnimg = styled.img`
+  display: flex;
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 0 0 15px;
+`;
+const OtherForm = styled.input`
+  padding: 8px;
+  border: 3px solid #c8bef3;
+  border-radius: 10px;
+  outline: none;
+  width: 80px;
+  height: 30px;
+  margin-left: 3px;
+`;
+const UpdateForm = styled.input`
+  padding: 8px;
+  border: 5px solid #c8bef3;
+  border-radius: 10px;
+  outline: none;
+  width: 210px;
+  margin-left: -15px;
+`;
 const PlanForm = () => {
   const { plan, setPlan } = useContext(PlanContext);
   const { authorization } = useContext(AuthContext); // AuthContext에서 토큰 가져오기
+  const [isupdate, setUPdate] = useState(false); // 기타버튼 누르기
+  const [isVisible, setIsVisible] = useState(true); //기타버튼 보이기
   const [formData, setFormData] = useState({
     food: plan.food,
     cvs: plan.cvs,
@@ -148,6 +191,11 @@ const PlanForm = () => {
     console.log("Updating Plan:", formData);
     setPlan(formData);
     alert("상태가 업데이트되었습니다.");
+  };
+
+  const addCategory = () => {
+    setUPdate(true);
+    setIsVisible(false);
   };
 
   return (
@@ -231,22 +279,32 @@ const PlanForm = () => {
             onChange={handleInputChange}
           />
         </FormG>
-
-        <FormG>
-          <FormBox>
-            <FormImg
+        {isVisible && (
+          <PlusBtn type="button" onClick={addCategory}>
+            추가하기
+            <Btnimg
               src={`${process.env.PUBLIC_URL}/icons/others.png`}
               alt="others"
             />
-            <FormTitle>기타</FormTitle>
-          </FormBox>
-          <FormInput
-            type="text"
-            name="others"
-            value={Number(formData.others).toLocaleString("ko-KR")}
-            onChange={handleInputChange}
-          />
-        </FormG>
+          </PlusBtn>
+        )}
+        {isupdate && (
+          <FormG>
+            <FormBox>
+              <FormImg
+                src={`${process.env.PUBLIC_URL}/icons/others.png`}
+                alt="others"
+              />
+              <OtherForm />
+            </FormBox>
+            <UpdateForm
+              type="text"
+              name="others"
+              value={Number(formData.others).toLocaleString("ko-KR")}
+              onChange={handleInputChange}
+            />
+          </FormG>
+        )}
 
         <UpdateBtn type="button" onClick={handleUpdatePlan}>
           미리보기

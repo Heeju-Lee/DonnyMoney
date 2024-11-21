@@ -66,7 +66,7 @@ const DoughnutChart = () => {
     { label: "교통", value: plan.transport },
     { label: "편의점", value: plan.cvs },
     { label: "음식", value: plan.food },
-    { label: "기타", value: plan.others },
+    { label: "네컷사진", value: plan.others },
     { label: "저축", value: plan.saving },
   ];
 
@@ -87,7 +87,7 @@ const DoughnutChart = () => {
         { label: "교통", value: parseValue(plan.transport) || 0 },
         { label: "편의점", value: parseValue(plan.cvs) || 0 },
         { label: "음식", value: parseValue(plan.food) || 0 },
-        { label: "기타", value: parseValue(plan.others) || 0 },
+        { label: "네컷사진", value: parseValue(plan.others) || 0 },
         { label: "저축", value: parseValue(plan.saving) || 0 },
       ].map((item) => ({
         ...item,
