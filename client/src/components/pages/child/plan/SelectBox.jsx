@@ -15,6 +15,9 @@ const SelectedOption = styled.div`
   border-radius: 5px;
   cursor: pointer;
   background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const OptionsList = styled.ul`
@@ -133,7 +136,15 @@ const SelectBox = () => {
   return (
     <SelectBoxContainer>
       <SelectedOption onClick={() => setIsOpen(!isOpen)}>
-        {selectedOption || "옵션을 선택하세요"}
+        <div>{selectedOption || "옵션을 선택하세요"}</div>
+        <>
+          <img
+            src="/icons/down.png"
+            width={"15px"}
+            height={"15px"}
+            // style={{ marginLeft: "10px" }}
+          />
+        </>
       </SelectedOption>
       <OptionsList open={isOpen}>
         {options.map((option) => (
@@ -142,6 +153,7 @@ const SelectBox = () => {
           </OptionItem>
         ))}
       </OptionsList>
+
       {isLoading && <p>로딩 중...</p>}
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
     </SelectBoxContainer>

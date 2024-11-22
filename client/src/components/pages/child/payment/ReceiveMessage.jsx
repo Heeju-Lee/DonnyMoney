@@ -22,7 +22,7 @@ const ReceiveMessage = () => {
         if (firstFeedbackMessage) {
           setNotificationData(firstFeedbackMessage);
         } else {
-          alert("피드백 메시지가 없습니다.");
+          // alert("피드백 메시지가 없습니다.");
         }
       })
       .catch((err) => {

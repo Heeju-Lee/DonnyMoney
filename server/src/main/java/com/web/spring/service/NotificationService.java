@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -43,6 +45,8 @@ public class NotificationService {
 	private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 	// Emitter를 관리하기 위한 Map
 	private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
+	
+	private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 	
 	// Service에 SSE Emitter를 생성하고 타임아웃을 설정 해 준다.
 	private SseEmitter createEmitter(Long id) {
@@ -108,26 +112,23 @@ public class NotificationService {
 		
 	}
 	
-	// SSE를 통해 실제 실시간 알림을 전송하는 메서드 (https://velog.io/@black_han26/SSE-Server-Sent-Events)
-	private void sendSseNotification(Long id, NotificationResponseDto notificationResponseDto) {   
-	    // Emitter 가져오기
-	    SseEmitter emitter = emitters.get(id);
-	    System.out.println("emitter 있는지 확인 ======> " + emitter);
+	// (https://velog.io/@black_han26/SSE-Server-Sent-Events)
+	
+	// SSE를 통해 실제 실시간 알림을 전송하는 메서드 
+	private void sendSseNotification(Long id, NotificationResponseDto notificationResponseDto) {
+	    SseEmitter emitter = emitters.get(id); // Emitter 가져오기
+	    System.out.println("emitter 확인 : " + emitter);
 	    
-	    if (emitter == null) {
-	        return; // Emitter가 없으면 종료
-	    }
+	    if (emitter == null) return; // Emitter 없으면 종료
 	    
 	    // Emitter가 존재하는 경우
 	    try {
-//	        System.out.println("Sending notification ===========>>>>>> " + new ObjectMapper().writeValueAsString(notificationResponseDto));
 	        emitter.send(SseEmitter.event()
 	                .id(String.valueOf(notificationResponseDto.getNotiNum()))
 	                .data(new ObjectMapper().writeValueAsString(notificationResponseDto))
-	                .reconnectTime(3000)
+	                .reconnectTime(3000) // 클라이언트가 연결을 잃었을때 재연결 간격설정
 	                );	        
 	    } catch (IOException | IllegalStateException e) {
-//	        System.err.println("Error sending notification: " + e.getMessage());
 	    	emitter.completeWithError(e);
 	        emitters.remove(id); // 오류 발생 시 Emitter 제거
 	    }
@@ -138,27 +139,19 @@ public class NotificationService {
     public SseEmitter subscribe(Long id, final HttpServletResponse response) {
         // 기존 Emitter가 있을 경우 삭제
         if (emitters.containsKey(id)) {
-//            System.out.println("Removing existing emitter for ID: " + id);
             emitters.remove(id);
         }
-
         // CORS 관련 헤더 설정
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 
         // SSE 관련 헤더 설정
-//    	response.setContentType("text/event-stream");
         response.setContentType("text/event-stream; charset=UTF-8");
     	response.setCharacterEncoding("UTF-8");
-    	
         
-//        System.out.println("Emitter 생성, id : " + id);
-        
-        
-        // id를 이용하여 클라이언트와 매핑되는 Emitter를 생성해준다.
-        // Emitter 생성 및 추가
-        SseEmitter emitter = createEmitter(id);
+        // id를 이용하여 클라이언트와 매핑되는 Emitter를 생성하고 저장함
+        SseEmitter emitter = createEmitter(id); // Emitter 생성 및 추가
         emitters.put(id, emitter);
         
         // 클라이언트에게 주기적으로 빈 데이터를 보내 연결을 유지시킨다
@@ -166,7 +159,9 @@ public class NotificationService {
             try {
                 emitter.send(SseEmitter.event().name("keep-alive").data("ping").reconnectTime(3000));
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace(); // production 환경에서는 보안상 slf4j나 logback 등을 사용
+            	logger.error("keep-aliv 메세지 전송실채, 클라이언트 연결 해제 처리. ", e);
+            	emitters.remove(id); // 연결 끊김 시 Emitter 제거(추가)
             }
         };
         

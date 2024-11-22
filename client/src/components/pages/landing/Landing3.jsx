@@ -74,17 +74,13 @@ const Outer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   text-align: center;
-  /* border: 2px solid red; */
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  /* border: 1px solid blue; */
 `;
 
 const Title = styled.div`

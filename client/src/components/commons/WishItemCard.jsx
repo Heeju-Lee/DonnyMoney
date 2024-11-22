@@ -74,6 +74,8 @@ const Card = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
+  margin: 0 auto;
+
   /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
 
   /* 만료된 카드 스타일 */
