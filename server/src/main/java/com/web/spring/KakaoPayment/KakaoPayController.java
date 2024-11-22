@@ -55,7 +55,7 @@ public class KakaoPayController {
 
         //redirectAttributes.addAttribute("ordId", ordId);
 
-        response.sendRedirect("http://localhost:3000/agreement");
+        response.sendRedirect("http://52.79.249.178:3000/agreement");
     }
 
     // 결제 취소시 실행 url
@@ -64,7 +64,7 @@ public class KakaoPayController {
         kakaoPayService.cancelOrFailPayment(ordId);
         log.info("결제 취소");
 
-        return "redirect:http://localhost:3000/order/pay/cancel";
+        return "redirect:http://52.79.249.178:3000/order/pay/cancel";
     }
 
     // 결제 실패시 실행 url
@@ -73,6 +73,6 @@ public class KakaoPayController {
         kakaoPayService.cancelOrFailPayment(ordId);
         log.info("결제 실패");
 
-        return "redirect:http://localhost:3000/order/pay/fail";
+        return "redirect:http://52.79.249.178:3000/order/pay/fail";
     }
 }
