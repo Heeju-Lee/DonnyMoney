@@ -12,7 +12,14 @@ export const useSSE = (url, onMessage) => {
     //   console.log("[SSE] 이미 연결되었습니다.");
     // }
     let sse; //
-    sse = new EventSource(url);
+    sse = new EventSource(url); // GET
+    // GET /sse-endpoint HTTP/1.1
+    // Host: example.com
+    // Accept: text/event-stream
+    // Connection: keep-alive
+
+    // 클라이언트는 GET 요청 상태를 유지하며, HTTP연결을 keep-alive로 열어둔 상태로 서버와 실시간으로 데이터를 주고받음
+    // 브라우저의 EventSource 객체가 실제 연결을 유지하고 데이터를 처리를 담당함
 
     const setupSSE = () => {
       console.log("[SSE] 연결시도 중..");

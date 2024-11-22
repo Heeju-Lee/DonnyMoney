@@ -6,7 +6,7 @@ import { PlanContext } from "../../../../pages/context/MoneyPlanContext";
 import { formatCurrency } from "../../../../services/GlobalFunction";
 
 const ChartContainer = styled.div`
-  width: 50vw; /* 차트의 너비 */
+  width: 100%; /* 차트의 너비 */
   height: 25vh; /* 차트의 높이 */
   display: flex;
   align-items: center;

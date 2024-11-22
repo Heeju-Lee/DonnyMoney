@@ -205,6 +205,7 @@ export default RegisterPage;
 
 const Container = styled.div`
   width: 600px;
+
   margin: 0 auto;
 `;
 

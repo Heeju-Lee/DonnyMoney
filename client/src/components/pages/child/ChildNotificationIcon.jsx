@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import {
   fetchChildNotifications,
+  getDaysAgo,
   updateRead,
 } from "../../../services/NotificationService";
 import { useSSE } from "../../../services/sseEmitter";
@@ -46,7 +47,10 @@ export const ChildNotificationIcon = () => {
     `${process.env.REACT_APP_BASE_URL}/notification/subscribe/${memberNo}`,
     (notification) => {
       try {
-        if (notification.notiNum !== -1) {
+        if (
+          notification.notiNum !== -1 &&
+          notification.senderType === "parent"
+        ) {
           setNotifications((prev) => [notification, ...prev]); // 알림 목록 업데이트
           setHasUnread(true); // 새 알림이 오면 미읽은 상태로 나타냄
         }
@@ -102,10 +106,13 @@ export const ChildNotificationIcon = () => {
                 className={noti.isRead ? "read" : "unread"}
                 onClick={() => handleRead(noti.notiNum, noti.category)} //읽음처리
               >
-                {/* {noti.message} */}
-                {noti.category === "money" && "용돈을 받았습니다."}
-                {noti.category === "parentMsg" &&
-                  "부모님의 피드백이 도착했습니다."}
+                <div>
+                  {noti.category === "money" && "용돈을 받았습니다."}
+                  {noti.category === "parentMsg" &&
+                    "부모님의 피드백이 도착했습니다."}
+                </div>
+
+                {/* <div className="msgDate">{getDaysAgo(noti.createdAt)}</div> */}
               </NotificationItem>
             ))
           ) : (
@@ -157,7 +164,9 @@ const NotificationList = styled.div`
 
 const NotificationItem = styled.div`
   cursor: pointer;
-  padding: 5px;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
 
   &.unread {
     background-color: #fff9b1;
@@ -165,6 +174,10 @@ const NotificationItem = styled.div`
 
   &.read {
     background-color: #ffffff;
+  }
+  .msgDate {
+    font-size: 14px;
+    color: #bebebe;
   }
 `;
 

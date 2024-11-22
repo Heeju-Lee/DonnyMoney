@@ -9,97 +9,6 @@ import axios from "axios";
 import { AuthContext } from "../../App";
 import { sendNotificationToParent } from "../../services/NotificationService";
 
-const TitleWapper = styled.div`
-  display: flex;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  justify-content: space-evenly;
-`;
-const Wapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 50px;
-  position: relative; /* OverlayDiv 위치 제어를 위해 추가 */
-`;
-
-const PageTitle = styled.h3`
-  font-weight: bold;
-  color: #3d3d3d;
-  text-align: center;
-`;
-const UpdateBtn = styled.button`
-  background-color: #4829d7;
-  color: white;
-  font-style: bold;
-  font-size: 1.2rem;
-  border: 2px solid #4829d7;
-  border-radius: 10px;
-  width: 15vw;
-  height: 5.8vh;
-  font-weight: bold;
-`;
-const SendBtn = styled.button`
-  background-color: #4829d7;
-  color: white;
-  font-style: bold;
-  font-size: 1.2rem;
-  border: 2px solid #4829d7;
-  border-radius: 10px;
-  width: 25vw;
-  height: 5.8vh;
-  font-weight: bold;
-  margin-left: 30px;
-`;
-const BtnWapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: -20px;
-  margin-bottom: 20px;
-`;
-const OverlayDiv = styled.div`
-  position: absolute; /* Wapper 내부에서 위치 고정 */
-  top: 0;
-  left: 130px;
-  width: 80%; /* Wapper의 전체 너비 */
-  height: 95%; /* Wapper의 전체 높이 */
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Wapper의 다른 요소 위에 표시 */
-`;
-const OverlayMessage = styled.h1`
-  color: #fff;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  background: #4829d7;
-  padding: 20px;
-  border-radius: 8px;
-`;
-const ModalBtn = styled.button`
-  background-color: #4829d7;
-  color: white;
-  font-style: bold;
-  font-size: 1.2rem;
-  border: 2px solid #4829d7;
-  border-radius: 10px;
-  width: 8vw;
-  height: 5.8vh;
-  font-weight: bold;
-  margin-left: 30px;
-`;
-const ModalBtnWapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 80px;
-`;
-const ModalTitle = styled.h3`
-  margin-bottom: 80px;
-`;
-const ModalTextBox = styled.div``;
 const MoneyPlanPage = () => {
   const [isModalOpen, setModalOpen] = useState(false); // 모달 열림/닫힘 상태
   const {
@@ -112,7 +21,7 @@ const MoneyPlanPage = () => {
   } = useContext(PlanContext); // Context에서 overlayStatus 가져오기
   const { memberNo, role, name, authorization } = useContext(AuthContext);
 
-  console.log("auth 확인하기", authorization);
+  // console.log("auth 확인하기", authorization);
   const today = new Date();
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth() + 1;
@@ -130,7 +39,7 @@ const MoneyPlanPage = () => {
           },
         }
       );
-      console.log("부모찾기", response.data);
+      // console.log("부모찾기", response.data);
       setParentNum(response.data);
     } catch (error) {
       console.log("부모 넘버 조회 에러 : ", error);
@@ -204,10 +113,13 @@ const MoneyPlanPage = () => {
       },
     })
       .then((res) => {
-        console.log("dataToSend=======", plan);
-        console.log("axios res", res);
+        // console.log("dataToSend=======", plan);
+        // console.log("axios res", res);
         setModalOpen(false); // 모달 닫기
         setIsLoading(false); // 로딩 상태 해제
+
+        console.log("authorization : ", authorization);
+
         setOverlayStatus(true); //수정 불가 창업데이트
         sendNotificationToParent(
           memberNo,
@@ -274,6 +186,7 @@ const MoneyPlanPage = () => {
     <>
       <TitleWapper>
         <PageTitle>소비계획 세우기</PageTitle>
+
         <SelectBox />
       </TitleWapper>
       <Wapper>
@@ -285,8 +198,12 @@ const MoneyPlanPage = () => {
             </OverlayMessage>
           </OverlayDiv>
         )}
-        <PlanForm />
-        <SaveForm />
+        <Container>
+          <PlanForm />
+        </Container>
+        <Container>
+          <SaveForm />
+        </Container>
       </Wapper>
       <BtnWapper>
         {/* 날짜가 일치할 때만 버튼 표시 */}
@@ -314,7 +231,9 @@ const MoneyPlanPage = () => {
             ))}
           </ModalTextBox>
           <ModalBtnWapper>
-            <ModalBtn onClick={() => setModalOpen(false)}>닫기</ModalBtn>
+            <ModalBtn className="closeBtn" onClick={() => setModalOpen(false)}>
+              닫기
+            </ModalBtn>
             <ModalBtn onClick={submitJoin} disabled={isLoading}>
               {isLoading ? "전송 중..." : "전송"}
             </ModalBtn>
@@ -324,5 +243,117 @@ const MoneyPlanPage = () => {
     </>
   );
 };
+
+const TitleWapper = styled.div`
+  display: flex;
+  align-items: center;
+  /* margin-top: 30px;
+  margin-bottom: 30px; */
+  margin: 0 auto;
+  margin-bottom: 30px;
+  width: 1140px;
+  display: flex;
+  justify-content: space-between;
+`;
+const Wapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  position: relative; /* OverlayDiv 위치 제어를 위해 추가 */
+
+  margin-bottom: 50px;
+`;
+
+const Container = styled.div`
+  width: 45%;
+`;
+
+const PageTitle = styled.h3`
+  font-weight: bold;
+  color: #3d3d3d;
+  text-align: center;
+  margin: 0;
+`;
+const UpdateBtn = styled.button`
+  all: unset;
+  /* background-color: #4829d7; */
+  background-color: #9774fb;
+  color: white;
+  font-style: bold;
+  font-size: 1.2rem;
+  /* border: 2px solid #4829d7; */
+  border-radius: 10px;
+  /* width: 15vw; */
+  width: 300px;
+  height: 5.8vh;
+  font-weight: bold;
+  text-align: center;
+`;
+const SendBtn = styled.button`
+  background-color: #9774fb;
+  color: white;
+  font-style: bold;
+  font-size: 1.2rem;
+  border: 2px solid #9774fb;
+  border-radius: 10px;
+  /* width: 25vw; */
+  width: 300px;
+  height: 5.8vh;
+  font-weight: bold;
+  margin-left: 30px;
+`;
+const BtnWapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: -20px;
+  margin-bottom: 20px;
+`;
+const OverlayDiv = styled.div`
+  position: absolute; /* Wapper 내부에서 위치 고정 */
+  top: 0;
+  left: 130px;
+  width: 80%; /* Wapper의 전체 너비 */
+  height: 95%; /* Wapper의 전체 높이 */
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Wapper의 다른 요소 위에 표시 */
+`;
+const OverlayMessage = styled.h1`
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  background: #4829d7;
+  padding: 20px;
+  border-radius: 8px;
+`;
+const ModalBtn = styled.button`
+  background-color: #9774fb;
+  color: white;
+  font-style: bold;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  width: 8vw;
+  height: 5.8vh;
+  font-weight: bold;
+  margin-left: 30px;
+`;
+const ModalBtnWapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  .closeBtn {
+    background-color: #f77833;
+  }
+`;
+const ModalTitle = styled.h3`
+  margin-bottom: 80px;
+`;
+const ModalTextBox = styled.div``;
 
 export default MoneyPlanPage;

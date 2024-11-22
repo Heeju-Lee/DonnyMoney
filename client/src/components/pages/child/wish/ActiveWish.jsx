@@ -71,16 +71,12 @@ const Activewish = (imgSrc) => {
     );
     formData.append("wishFile", file); // 파일 첨부
     try {
-      const response = await axios.post(
-        "http://localhost:9999/children/wishes",
-        formData,
-        {
-          headers: {
-            Authorization: localStorageAuth, // Authorization 헤더에 토큰 추가
-            "Content-Type": "multipart/form-data", // 데이터 형식 명시
-          },
-        }
-      );
+      const response = await axios.post("/children/wishes", formData, {
+        headers: {
+          Authorization: localStorageAuth, // Authorization 헤더에 토큰 추가
+          "Content-Type": "multipart/form-data", // 데이터 형식 명시
+        },
+      });
 
       console.log("위시 등록 성공:", response.data);
       // 데이터가 배열인지 객체인지 확인 후 처리
@@ -142,13 +138,61 @@ const Activewish = (imgSrc) => {
     }
   };
 
+  // 커스텀 화살표 컴포넌트
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          width: "50px",
+          height: "50px",
+          // background: "gray", // 화살표 배경색
+          // borderRadius: "50%", // 동그란 모양
+          // padding: "30px", // 화살표 크기
+          zIndex: 1, // 슬라이더 위로 나오게 설정
+        }}
+        onClick={onClick}
+      >
+        <img src="/icons/next-arrow.png" alt="" />
+        {/* ▶ 화살표 아이콘 (필요에 따라 변경 가능) */}
+      </div>
+    );
+  };
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          width: "50px",
+          height: "50px",
+          // background: "gray",
+          // borderRadius: "50%",
+          // padding: "10px",
+          zIndex: 1,
+        }}
+        onClick={onClick}
+      >
+        {/* ◀ */}
+        <img src="/icons/next-arrow.png" alt="" />
+      </div>
+    );
+  };
   // Slick Slider 설정 옵션
   const settings = {
-    dots: true, // 하단 점 네비게이션 활성화
+    arrows: false,
     infinite: true, // 무한 스크롤 설정
-    speed: 500, // 전환 속도 (ms)
+    // speed: 500, // 전환 속도 (ms)
     slidesToShow: 3, // 한 번에 보여질 슬라이드 수
     slidesToScroll: 1, // 한 번에 스크롤할 슬라이드 수
+    // centerMode: true, // 슬라이드 가운데 정렬 활성화
+    nextArrow: <CustomNextArrow />, // 커스텀 Next 화살표
+    prevArrow: <CustomPrevArrow />, // 커스텀 Prev 화살표
     responsive: [
       {
         breakpoint: 1000, // 화면 크기가 768px 이하일 경우
@@ -181,7 +225,9 @@ const Activewish = (imgSrc) => {
 
   return (
     <>
-      <InsertWish onClick={inserModalOpen}>위시 등록하기</InsertWish>
+      <ButtonSection>
+        <InsertWish onClick={inserModalOpen}>위시 등록하기</InsertWish>
+      </ButtonSection>
       {/* 위시 생성 모달이 열렸을 때만 표시 */}
       {isModalOpen && (
         <Modal width="400px" height="600px">
@@ -227,12 +273,17 @@ const Activewish = (imgSrc) => {
         <Slider {...settings}>
           {cards.map((card) => (
             <WishItemCard
-              key={card.id}
               imgSrc={card.imgSrc}
               itemName={card.itemName}
               itemPrice={card.itemPrice}
               $progressRate={card.progressRate}
+              cardWidth={"260px"}
+              cardHeight={"350px"}
+              cardPadding={"25px"}
+              cardBgColor={"#C0A9EF"}
+              cardFontColor={"#ffffff"}
               onClick={() => showDetail(card)}
+              // progress bar #72C13F
             />
           ))}
         </Slider>
@@ -247,6 +298,13 @@ const Activewish = (imgSrc) => {
   );
 };
 
+const ButtonSection = styled.div`
+  display: flex;
+  justify-content: end;
+
+  border: 1px solid red;
+`;
+
 const InsertPreview = styled.img`
   width: 20vw;
   height: 20vh;
@@ -255,11 +313,11 @@ const InsertPreview = styled.img`
   margin-bottom: 20px;
 `;
 const InsertWish = styled.button`
-  background-color: #4829d7;
+  background-color: #9774fb;
+  border: none;
   color: white;
   font-style: bold;
   font-size: 1.2rem;
-  border: 2px solid #4829d7;
   border-radius: 10px;
   width: 15vw;
   height: 5.8vh;
@@ -267,11 +325,11 @@ const InsertWish = styled.button`
   font-weight: bold;
 `;
 const InsertImg = styled.button`
-  background-color: #4829d7;
+  background-color: #9774fb;
+  border: none;
   color: white;
   font-style: bold;
   font-size: 1.2rem;
-  border: 2px solid #4829d7;
   border-radius: 10px;
   width: 15vw;
   height: 5.8vh;
@@ -304,14 +362,14 @@ const FormInput = styled.input`
   border: 5px solid #c8bef3;
   border-radius: 10px;
   outline: none;
-  maxwidth: 30vw;
+  max-width: 30vw;
 `;
 const InsertWishinModal = styled.button`
-  background-color: #4829d7;
+  background-color: #9774fb;
+  border: none;
   color: white;
   font-style: bold;
   font-size: 1.2rem;
-  border: 2px solid #4829d7;
   border-radius: 10px;
   width: 15vw;
   height: 5.8vh;

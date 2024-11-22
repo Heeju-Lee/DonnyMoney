@@ -15,7 +15,6 @@ public class NoSearchException extends RuntimeException{
 		this.httpStatus = httpStatus;
 		this.title = title;
 	}
-	
 	public NoSearchException(String message, String title) {	
 		this(message,title,HttpStatus.EXPECTATION_FAILED);
 	}
