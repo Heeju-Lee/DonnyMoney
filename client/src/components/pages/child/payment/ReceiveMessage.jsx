@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+
 const ReceiveMessage = () => {
   const token = localStorage.getItem("Authorization");
   const childNum = localStorage.getItem("memberNo");
@@ -38,11 +39,11 @@ const ReceiveMessage = () => {
       <ContainContent>
         {notificationData === null ? (
           <Title>
-            <p>:이메일2:도착한 메세지가 없습니다.:이메일2:</p>
+            <p>📩 도착한 메세지가 없습니다 📩</p>
           </Title>
         ) : (
           <>
-            <Title>:이메일2:메세지가 도착했습니다:이메일2:</Title>
+            <Title>📩 메세지가 도착했습니다 📩</Title>
             <MessageWrapper>
               {!isMessageVisible ? (
                 <MessagePrompt>
@@ -51,10 +52,10 @@ const ReceiveMessage = () => {
                 </MessagePrompt>
               ) : (
                 <LetterBox>
-                  <p>:스크롤: To. 사랑스러운 우리 아이에게</p>
+                  <p>📜 To. 사랑스러운 우리 아이에게</p>
                   <Message>{notificationData.message}</Message>
                   <p>
-                    :펜촉이_왼쪽_아래를_향한_만년필: From. 너를 사랑하는
+                    🖋️ From. 너를 사랑하는
                     부모님이
                   </p>
                 </LetterBox>
