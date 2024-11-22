@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @AllArgsConstructor
 @Validated
+@RequestMapping("/api")
 public class KakaoPayController {
     private final KakaoPayService kakaoPayService;
     private final PointOrderRepository pointOrderRepository;
