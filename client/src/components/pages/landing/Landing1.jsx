@@ -5,12 +5,16 @@ export const Landing1 = () => {
   return (
     <Outer>
       <LeftContainer>
-        <img src="images/coin-1.svg" class="coin1" alt="Large Coin" />
-        <img src="images/coin-2.svg" class="coin2" alt="Small Left Coin" />
-        <img src="images/coin-3.svg" class="coin3" alt="Small Right Coin" />
-        <img src="images/stockCoin1.png" class="stockCoin1" alt="Bottom Coin" />
+        <img src="images/coin-1.svg" className="coin1" alt="Large Coin" />
+        <img src="images/coin-2.svg" className="coin2" alt="Small Left Coin" />
+        <img src="images/coin-3.svg" className="coin3" alt="Small Right Coin" />
+        <img
+          src="images/stockCoin1.png"
+          className="stockCoin1"
+          alt="Bottom Coin"
+        />
         {/* <img src="images/stockCoin2.png" class = "stockCoin2"/> */}
-        <img src="images/final_Donny.png" class="Donny" />
+        <img src="images/final_Donny.png" className="Donny" />
       </LeftContainer>
 
       <RightContainer>
