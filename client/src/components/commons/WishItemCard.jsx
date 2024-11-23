@@ -119,15 +119,14 @@ const ProgressBar = styled.div`
   border-radius: 10px;
   overflow: hidden;
   margin: 10px 0;
-  background-color: #4caf50;
 
   &::before {
-    /* content: "";
+    content: "";
     position: absolute;
     height: 100%;
     width: ${(props) => props.$progressRate || 0}%;
-    transition: width 0.3s ease-in-out; */
-    /* background-color: #fff9b1; */
+    transition: width 0.3s ease-in-out;
+    background-color: #4caf50;
   }
 `;
 const ItemDetail = styled.div`
