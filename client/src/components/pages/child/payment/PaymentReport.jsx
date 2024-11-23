@@ -245,15 +245,23 @@ const PaymentReport = () => {
   return (
     <Outer>
       <MainSection>
+        <div>
+          <Button className="tabBtn" onClick={showPaymentChart}>
+            리포트 보기
+          </Button>
+          <Button className="tabBtn" onClick={showMonthList}>
+            내가 쓴 돈 보기
+          </Button>
+        </div>
+
         <PointSection>
-          <p>
-            내 포인트 잔액{" "}
-            {point !== null ? formatCurrency(point) : "로딩 중..."}P
-          </p>{" "}
+          <div>
+            내 포인트 잔액&nbsp;&nbsp;
+            <span>{point !== null ? formatCurrency(point) : "로딩 중..."}</span>
+            P
+          </div>
           {/* 포인트 데이터 표시 */}
         </PointSection>
-        <Button onClick={showPaymentChart}>리포트 보기</Button>
-        <Button onClick={showMonthList}>내가 쓴 돈 보기</Button>
       </MainSection>
 
       {/* 월간 소비내역 차트 영역*/}
@@ -261,8 +269,8 @@ const PaymentReport = () => {
         <Report>
           <PaymentChart>
             <Title>
-              내 <PlanColor>계획</PlanColor>과 <PayedColor>소비</PayedColor>{" "}
-              한눈에 보기({month}월)
+              {month}월 내 <PlanColor>계획</PlanColor>과
+              <PayedColor>소비</PayedColor> 한눈에 보기
             </Title>
             <br />
             {/* 월별 버튼 */}
@@ -270,6 +278,7 @@ const PaymentReport = () => {
               {Array.from({ length: 12 }, (_, index) => index + 1).map(
                 (chartMonth) => (
                   <Button
+                    className="monthBtn"
                     key={chartMonth}
                     value={chartMonth}
                     onClick={() => changeMonth(chartMonth)}
@@ -352,11 +361,13 @@ const PaymentReport = () => {
       {isMonthList && !isChartVisible && (
         <Payment>
           {monthList.length === 0 ? (
-            <p style={{ color: "blueviolet" }}>📢소비 내역이 없습니다</p>
+            <NoData>
+              <p>📢 소비 내역이 없습니다</p>
+            </NoData>
           ) : (
             <MonthPayment>
               <Title>
-                <span style={{ color: "#8529fd" }}>{month}월</span> 내가 쓴 돈{" "}
+                <span style={{ color: "#9068dc" }}>{month}월</span> 내가 쓴 돈
               </Title>
               <TotalPrice>
                 총합 : <Price>{formatCurrency(totalAmount)}</Price>원
@@ -400,7 +411,7 @@ export default PaymentReport;
 
 const Outer = styled.div`
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 40px auto;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -411,8 +422,12 @@ const Outer = styled.div`
 const MainSection = styled.div`
   width: 100%;
   text-align: left;
-  /* margin-bottom: 20px; */
-  margin-left: 20px;
+  /* margin-left: 20px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+
+  padding-left: 20px;
 `;
 
 const PointSection = styled.div`
@@ -420,37 +435,47 @@ const PointSection = styled.div`
   height: fit-content;
   align-items: center;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  margin-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0px 20px;
+  margin-bottom: 30px;
 
-  p {
-    margin-top: 16px;
-    font-size: 25px;
+  div {
+    padding: 14px 0;
+    font-size: 24px;
+  }
+  span {
+    color: #9068dc;
   }
 `;
 
 const Button = styled.button`
-  background-color: hsl(
-    265.8682634730539,
-    97.6608187134503%,
-    66.47058823529413%
-  );
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+
   color: white;
   padding: 20px 25px;
   font-size: 20px;
   border: 1px solid white;
-  /* border-radius: 15px; */
-  /* margin-bottom: -10px; */
   position: relative;
   cursor: pointer;
   font-weight: 600;
+  /* background-color: #bea9ed; */
+  background-color: #f98d5a;
   &:hover {
-    background-color: hsl(
-      293.15789473684214,
-      91.93548387096774%,
-      75.68627450980392%
-    );
+    background-color: #f77833;
+    /* background-color: #9068dc; */
+  }
+
+  &.monthBtn {
+    border-radius: 14px;
+    /* background-color: #f98d5a; */
+    background-color: #bea9ed;
+    padding: 10px 20px;
+  }
+  &.monthBtn:hover {
+    /* background-color: #f77833; */
+    background-color: #9068dc;
   }
 `;
 
@@ -460,7 +485,18 @@ const Payment = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+`;
+const NoData = styled.div`
+  height: 200px;
+  display: flex;
+  align-items: center;
+  p {
+    margin: 0;
+    font-size: 32px;
+    color: gray;
+  }
 `;
 
 const MonthPayment = styled.div`
@@ -470,8 +506,9 @@ const MonthPayment = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 32px;
   text-align: center;
+  margin-bottom: 10px;
 `;
 
 const TotalPrice = styled.div`
@@ -482,7 +519,6 @@ const TotalPrice = styled.div`
 
 const Price = styled.span`
   font-weight: bold;
-  color: #2a9d8f;
 `;
 
 const Table = styled.table`
@@ -494,7 +530,8 @@ const Table = styled.table`
 `;
 
 const TableHeader = styled.th`
-  background-color: #8529fd;
+  /* background-color: #f98d5a; */
+  background-color: #9068dc;
   color: white;
   padding: 12px;
   font-size: 25px;
@@ -523,11 +560,14 @@ const Report = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
 `;
 
 const PaymentChart = styled.div`
-  margin: 30px 0px;
+  /* margin: 30px 0px; */
+  padding: 50px 0;
+  border-radius: 24px;
 `;
 // 텍스트 CSS
 const PlanColor = styled.span`
@@ -540,7 +580,6 @@ const PayedColor = styled.span`
 
 const ContainChart = styled.div`
   border-radius: 10px;
-  // box-shadow: 0 0 10px rgb(239, 0, 0);
   margin: 0px 30px;
   box-sizing: border-box;
 `;
@@ -551,9 +590,8 @@ const Buttons = styled.div`
   align-items: center; /* 필요 시 세로 정렬 추가 */
   gap: 10px; /* 버튼 간격 추가 */
   width: 100%; /* 필요 시 부모 크기 기반 정렬 */
-  margin: 0 auto;
+  margin: 0 auto 32px auto;
   justify-content: center;
-  margin: 0px 20px;
   box-sizing: border-box;
 `;
 const Message = styled.div`
@@ -561,6 +599,7 @@ const Message = styled.div`
   font-size: 20px;
   text-align: center;
   margin: 10px 0px;
+  color: gray;
 `;
 
 // 2x3 배열을 위한 Grid 스타일

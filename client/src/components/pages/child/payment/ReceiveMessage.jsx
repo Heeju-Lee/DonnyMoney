@@ -52,9 +52,9 @@ const ReceiveMessage = () => {
                 </MessagePrompt>
               ) : (
                 <LetterBox>
-                  <p>📜 To. 사랑스러운 우리 아이에게</p>
-                  <Message>{notificationData.message}</Message>
-                  <p>🖋️ From. 너를 사랑하는 부모님이</p>
+                  <p className="to">📜 To. 사랑스러운 우리 아이에게</p>
+                  <Message>" {notificationData.message} "</Message>
+                  <p className="from">🖋️ From. 너를 사랑하는 부모님이</p>
                 </LetterBox>
               )}
             </MessageWrapper>
@@ -67,10 +67,10 @@ const ReceiveMessage = () => {
 const ContainAll = styled.div`
   margin: 0 auto;
   width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
-  margin: 20px 0px;
-  background-color: hsl(0, 0%, 100%);
+  margin: 20px 0 60px 0;
+  background-color: #ffffff;
 `;
 const ContainContent = styled.div`
   padding: 30px;
@@ -85,17 +85,20 @@ const Title = styled.div`
   /* color: #8529FD; */
 `;
 const ConfirmButton = styled.button`
-  width: fit-content;
-  padding: 10px;
-  border-radius: 15px;
-  background-color: #8529fd;
+  /* width: fit-content; */
+  width: 200px;
+  padding: 10px 0;
+  border-radius: 24px;
+  border: none;
+  /* background-color: #9068dc; */
+  background-color: #bea9ed;
   color: white;
   font-size: 15px;
   display: block;
   margin: 20px auto; /* 버튼을 중앙에 배치 */
   transition: all 0.3s ease;
   &:hover {
-    background-color: #4b0e93;
+    background-color: #9068dc;
   }
 `;
 const MessageWrapper = styled.div`
@@ -104,11 +107,12 @@ const MessageWrapper = styled.div`
   align-items: center;
 `;
 const MessagePrompt = styled.div`
+  font-size: 24px;
   text-align: center;
 `;
 const LetterBox = styled.div`
   background-color: #fdf9f1;
-  padding: 30px;
+  padding: 15px 40px;
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   width: 90%;
@@ -118,7 +122,12 @@ const LetterBox = styled.div`
   p {
     margin: 15px 0;
     font-size: 18px;
-    line-height: 1.6;
+  }
+  .to {
+    text-align: left;
+  }
+  .from {
+    text-align: end;
   }
 `;
 const Message = styled.p`
