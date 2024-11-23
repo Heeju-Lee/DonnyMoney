@@ -18,7 +18,10 @@ const PlanForm = () => {
     shopping: plan.shopping,
     transport: plan.transport,
     saving: plan.saving,
-    others: plan.others,
+    others: {
+      name: plan.others?.name,
+      value: plan.others?.value,
+    },
   });
 
   const token = authorization;
@@ -42,15 +45,17 @@ const PlanForm = () => {
 
         // 가져온 데이터를 PlanContext와 formData에 설정
         const planData = response.data;
-        console.log("초기값으로 가져온 planData", planData);
-        setPlan(planData);
+
         setFormData({
           food: planData.food || 0,
           cvs: planData.cvs || 0,
           shopping: planData.shopping || 0,
           transport: planData.transport || 0,
           saving: planData.saving || 0,
-          others: planData.others || 0,
+          others: {
+            name: planData.saving.name, // 이름 필드
+            value: planData.saving.value, // 값 필드
+          },
         });
       } catch (error) {
         console.error(
@@ -61,28 +66,52 @@ const PlanForm = () => {
     };
 
     fetchInitialData();
-  }, [currentYear, currentMonth, setPlan, token]);
+  }, []);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, dataset } = e.target;
     const numericValue = value.replace(/[^0-9]/g, ""); // 숫자만 추출
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: numericValue,
-    }));
+    setFormData((prevData) => {
+      if (dataset.type === "name") {
+        return {
+          ...prevData,
+          [name]: {
+            ...(prevData[name] || { value: 0 }), // 기본값 설정
+            name: value,
+          },
+        };
+      } else if (dataset.type === "value") {
+        return {
+          ...prevData,
+          [name]: {
+            ...(prevData[name] || { name: "" }), // 기본값 설정
+            value: numericValue,
+          },
+        };
+      } else {
+        return {
+          ...prevData,
+          [name]: numericValue, // 일반 필드 업데이트
+        };
+      }
+    });
   };
 
   const handleUpdatePlan = () => {
-    // console.log("Updating Plan:", formData);
-    setPlan(formData);
-    // alert("상태가 업데이트되었습니다.");
+    setPlan((prevPlan) => ({
+      ...prevPlan,
+      ...formData, // formData를 최종적으로 PlanContext로 전달
+    }));
   };
 
   const addCategory = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      others: { name: "", value: 0 }, // 객체로 초기화
+    }));
     setUPdate(true);
     setIsVisible(false);
   };
-
   return (
     <Container>
       <Title>카테고리</Title>
@@ -180,12 +209,18 @@ const PlanForm = () => {
                 src={`${process.env.PUBLIC_URL}/icons/others.png`}
                 alt="others"
               />
-              <OtherForm />
+              <OtherForm
+                name="others"
+                value={formData.others.name}
+                data-type="name"
+                onChange={handleInputChange}
+              />
             </FormBox>
             <UpdateForm
               type="text"
               name="others"
-              value={Number(formData.others).toLocaleString("ko-KR")}
+              data-type="value"
+              value={Number(formData.others.value).toLocaleString("ko-KR")}
               onChange={handleInputChange}
             />
           </FormG>
