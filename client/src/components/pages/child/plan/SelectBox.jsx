@@ -7,6 +7,7 @@ import { AuthContext } from "../../../../App";
 const SelectBoxContainer = styled.div`
   position: relative;
   width: 200px;
+  margin-right: 50px;
 `;
 
 const SelectedOption = styled.div`
@@ -138,12 +139,7 @@ const SelectBox = () => {
       <SelectedOption onClick={() => setIsOpen(!isOpen)}>
         <div>{selectedOption || "옵션을 선택하세요"}</div>
         <>
-          <img
-            src="/icons/down.png"
-            width={"15px"}
-            height={"15px"}
-            // style={{ marginLeft: "10px" }}
-          />
+          <img src="/icons/down.png" width={"15px"} height={"15px"} />
         </>
       </SelectedOption>
       <OptionsList open={isOpen}>

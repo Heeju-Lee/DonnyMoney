@@ -10,7 +10,7 @@ const ReceiveMessage = () => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_URL}/notification/child/${childNum}`,
+      url: `/notification/child/${childNum}`,
       headers: {
         Authorization: `${token}`,
       },
@@ -54,10 +54,7 @@ const ReceiveMessage = () => {
                 <LetterBox>
                   <p>📜 To. 사랑스러운 우리 아이에게</p>
                   <Message>{notificationData.message}</Message>
-                  <p>
-                    🖋️ From. 너를 사랑하는
-                    부모님이
-                  </p>
+                  <p>🖋️ From. 너를 사랑하는 부모님이</p>
                 </LetterBox>
               )}
             </MessageWrapper>

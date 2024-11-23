@@ -30,28 +30,35 @@ const Activewish = (imgSrc) => {
     console.log("Activewish - showSlick ...token : ", localStorageAuth);
     axios({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_URL}/children/wishes/active`,
+      url: `/children/wishes/active`,
       headers: {
         Authorization: localStorageAuth, // Authorization 헤더에 토큰 추가
         "Content-Type": "multipart/form-data", // 데이터가 multipart/form-data 형식임을 명시
       },
     })
       .then((res) => {
-        const formattedData = res.data.map((item) => ({
-          id: item.wishNum, // wishNum을 id로 사용
-          imgSrc: item.img, // 이미지 URL
-          itemName: item.name, // 아이템 이름
-          itemPrice: item.price, // 아이템 가격
-          progressRate: (item.savingAmt / item.price) * 100 || 0, // 진행률 계산
-          savingAmt: item.savingAmt, //저축한 돈
-        }));
+        const formattedData = res.data.map((item) => {
+          const savingAmt = Number(item.savingAmt); // savingAmt 변환 및 기본값 처리
+          const itemPrice = Number(item.price); // itemPrice 변환 및 기본값 처리
+          const progressRate = (savingAmt / itemPrice) * 100 || 0; // 진행률 계산
+
+          return {
+            id: item.wishNum, // wishNum을 id로 사용
+            imgSrc: item.img, // 이미지 URL
+            itemName: item.name, // 아이템 이름
+            itemPrice: itemPrice, // 숫자로 변환된 아이템 가격
+            progressRate: progressRate, // 계산된 진행률
+            savingAmt: savingAmt, // 숫자로 변환된 저축한 돈
+          };
+        });
         setCards(formattedData);
+        console.log("진행률 확인", formattedData);
       })
       .catch((err) => {
         console.error("위시 등록 실패:", err);
       });
   };
-
+  console.log("현재 카드 상태 확인", cards);
   //카드 넣기...
   const handleSubmitWish = async () => {
     console.log("Activewish - handleSubmitWish ... token ", localStorageAuth);
@@ -209,7 +216,10 @@ const Activewish = (imgSrc) => {
     setSelectedCard(card); // 클릭된 카드 데이터 설정
     setWishDetail(true); // 디테일 창 열기
   };
-
+  //디테일창 닫기
+  const closeDetail = () => {
+    setWishDetail(false);
+  };
   // WishDetailBox 업데이트
   const handleSelectCard = (updateData) => {
     console.log("부모의 handleSelectCard 호출: ", updateData);
@@ -233,13 +243,19 @@ const Activewish = (imgSrc) => {
       {/* 위시 생성 모달이 열렸을 때만 표시 */}
       {isModalOpen && (
         <Modal width="430px" height="fit-content" sidePadding="50px 0">
-          <h2>내 위시 등록</h2>
-          {/* 이미지 미리보기 */}
-          {previewUrl && (
-            <div style={{ marginTop: "20px" }}>
-              <InsertPreview src={previewUrl} alt="미리보기" />
-            </div>
-          )}
+          <ModalWapper>
+            <MTitle>내 위시 등록</MTitle>
+            <CancleIcon
+              src={`${process.env.PUBLIC_URL}/icons/cancle.png`}
+              alt="cancle"
+              onClick={inserModalClose}
+            />
+          </ModalWapper>
+          <PreviwImg>
+            {/* 이미지 미리보기 */}
+            {previewUrl && <InsertPreview src={previewUrl} alt="미리보기" />}
+          </PreviwImg>
+
           {/* 파일 선택 */}
           <InsertImg onClick={handleActivateFileInput}>이미지등록</InsertImg>
           <input
@@ -293,6 +309,7 @@ const Activewish = (imgSrc) => {
         <WishDetailBox
           selectedCard={selectedCard}
           onSendData={handleSelectCard}
+          onCloseDetail={closeDetail}
         />
       )}
     </>
@@ -302,12 +319,19 @@ const Activewish = (imgSrc) => {
 const ButtonSection = styled.div`
   display: flex;
   justify-content: end;
+  // border: 1px solid red;
   margin-bottom: 50px;
   margin-right: 50px;
 `;
 
 const InsertPreview = styled.img`
-  width: 20vw;
+  width: 10vw;
+  height: 20vh;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+`;
+const PreviwImg = styled.div`
+  width: 10vw;
   height: 20vh;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -324,7 +348,25 @@ const InsertWish = styled.button`
   height: 50px;
   margin-top: 10px;
   font-weight: bold;
+  margin-right: 110px;
 `;
+const MTitle = styled.h2`
+  text-align: center;
+  margin-left: 90px;
+`;
+const ModalWapper = styled.div`
+  display: flex;
+  align-content: space-around;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin-bottom: 25px;
+`;
+const CancleIcon = styled.img`
+  width: 50px;
+  height: 50px;
+  margin-left: 60px;
+`;
+
 const InsertImg = styled.button`
   background-color: white;
   border: none;

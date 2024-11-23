@@ -46,7 +46,7 @@ const backgroundColors = [
   "rgba(54, 162, 235, 1)",
   "rgba(255, 206, 86, 1)",
   "rgba(75, 192, 192, 1)",
-  "rgba(0,74,158,1)",
+  "#886eff",
   "rgba(255, 159, 64, 1)",
 ];
 ChartJS.register(ArcElement, Tooltip);
@@ -66,29 +66,25 @@ const DoughnutChart = () => {
     { label: "교통", value: plan.transport },
     { label: "편의점", value: plan.cvs },
     { label: "음식", value: plan.food },
-    { label: "네컷사진", value: plan.others },
+    {
+      label: plan.others?.name || "기타",
+      value: parseValue(plan.others?.value),
+    },
     { label: "저축", value: plan.saving },
   ];
-
-  // 사용자 입력을 받아 plan을 갱신
-  const handleChange = (e, label) => {
-    const newValue = e.target.value;
-    // plan의 항목 값 갱신
-    setPlan((prevPlan) => ({
-      ...prevPlan,
-      [label]: newValue,
-    }));
-  };
 
   useEffect(() => {
     if (plan) {
       const updatedValues = [
-        { label: "쇼핑", value: parseValue(plan.shopping) || 0 },
-        { label: "교통", value: parseValue(plan.transport) || 0 },
-        { label: "편의점", value: parseValue(plan.cvs) || 0 },
-        { label: "음식", value: parseValue(plan.food) || 0 },
-        { label: "네컷사진", value: parseValue(plan.others) || 0 },
-        { label: "저축", value: parseValue(plan.saving) || 0 },
+        { label: "쇼핑", value: parseValue(plan.shopping) },
+        { label: "교통", value: parseValue(plan.transport) },
+        { label: "편의점", value: parseValue(plan.cvs) },
+        { label: "음식", value: parseValue(plan.food) },
+        {
+          label: plan.others?.name || "기타",
+          value: parseValue(plan.others?.value),
+        },
+        { label: "저축", value: parseValue(plan.saving) },
       ].map((item) => ({
         ...item,
         formattedValue: item.value
@@ -143,7 +139,15 @@ const DoughnutChart = () => {
             <Pie data={data} options={options} />
             <DataTextContainer>
               {formattedDataValues.map((item, index) => (
-                <div key={index}>
+                <div
+                  key={index}
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
                   <ColorChip color={backgroundColors[index]} />
                   <strong>{item.label}</strong>: {item.formattedValue} 원
                 </div>

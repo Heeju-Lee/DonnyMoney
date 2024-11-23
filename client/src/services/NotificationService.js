@@ -66,7 +66,7 @@ export const sendNotificationToChild = async (
     senderType: "parent",
   };
   const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/notification/sendToChild`,
+    `/notification/sendToChild`,
     {
       method: "POST",
       headers: {
@@ -100,7 +100,7 @@ export const sendNotificationToParent = async (
     senderType: "child",
   };
   const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/notification/sendToParent`,
+    `/notification/sendToParent`,
     {
       method: "POST",
       headers: {
@@ -122,7 +122,7 @@ export const sendNotificationToParent = async (
 export const findParentNum = async (childNum, authorization) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/notification/findParentNo/${childNum}`,
+      `/notification/findParentNo/${childNum}`,
       {
         headers: {
           Authorization: `${authorization}`,

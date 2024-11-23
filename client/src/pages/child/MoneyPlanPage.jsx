@@ -20,7 +20,11 @@ const MoneyPlanPage = () => {
     setPlan,
   } = useContext(PlanContext); // Context에서 overlayStatus 가져오기
   const { memberNo, role, name, authorization } = useContext(AuthContext);
-
+  // 데이터를 숫자로 변환하는 함수
+  const parseValue = (value) => {
+    const parsedValue = parseFloat(value); // 문자열을 숫자로 변환
+    return isNaN(parsedValue) ? 0 : parsedValue; // NaN이면 0으로 처리
+  };
   // console.log("auth 확인하기", authorization);
   const today = new Date();
   const currentYear = today.getFullYear();
@@ -32,7 +36,7 @@ const MoneyPlanPage = () => {
   const findParentNum = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/notification/findParentNo/${memberNo}`,
+        `/notification/findParentNo/${memberNo}`,
         {
           headers: {
             Authorization: `${authorization}`,
@@ -56,24 +60,17 @@ const MoneyPlanPage = () => {
         { label: "교통", value: plan.transport ?? 0 },
         { label: "편의점", value: plan.cvs ?? 0 },
         { label: "음식", value: plan.food ?? 0 },
-        { label: "기타", value: plan.others ?? 0 },
+        {
+          label: plan.others?.name || "기타",
+          value: parseValue(plan.others?.value),
+        },
         { label: "저축", value: plan.saving ?? 0 },
       ]);
     }
   }, []); // plan 변경 시 실행
 
   const handleSend = () => {
-    // 모달을 열기 전에 Context 값을 기반으로 동기화
-    // console.log("모달 열기전 plan", plan);
-    setPlan([
-      { label: "쇼핑", value: plan.shopping ?? 0 },
-      { label: "교통", value: plan.transport ?? 0 },
-      { label: "편의점", value: plan.cvs ?? 0 },
-      { label: "음식", value: plan.food ?? 0 },
-      { label: "기타", value: plan.others ?? 0 },
-      { label: "저축", value: plan.saving ?? 0 },
-    ]);
-    // console.log("모달 연 후  plan", plan);
+    console.log("모달 연 후  plan", plan);
     setModalOpen(true); // "부모님한테 보내기" 버튼 클릭 시 모달 열기
   };
   //console.log("db로 보낼 데이터", dataToSend);
@@ -87,20 +84,19 @@ const MoneyPlanPage = () => {
   const [errorMessage, setErrorMessage] = useState(null); // 에러 메시지 상태
   const submitJoin = (e) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
-    setIsLoading(true);
     setErrorMessage(null);
-    // console.log("데이터 보내기 전의 plan", plan);
     // 요청할 데이터를 변환하는 함수
     const transformPlanToRequestFormat = () => {
       return {
-        shopping: plan.find((item) => item.label === "쇼핑")?.value ?? 0,
-        transport: plan.find((item) => item.label === "교통")?.value ?? 0,
-        cvs: plan.find((item) => item.label === "편의점")?.value ?? 0,
-        food: plan.find((item) => item.label === "음식")?.value ?? 0,
-        others: plan.find((item) => item.label === "기타")?.value ?? 0,
-        saving: plan.find((item) => item.label === "저축")?.value ?? 0,
+        shopping: plan.shopping ?? 0,
+        transport: plan.transport ?? 0,
+        cvs: plan.cvs ?? 0,
+        food: plan.food ?? 0,
+        others: parseValue(plan.others?.value) ?? 0, // 값은 parseValue로 처리
+        saving: plan.saving ?? 0,
       };
     };
+
     const requestBody = transformPlanToRequestFormat();
     // console.log("보낼 데이터를 다시 확인하기", requestBody);
     axios({
@@ -133,7 +129,6 @@ const MoneyPlanPage = () => {
         setErrorMessage("전송 중 오류가 발생했습니다. 다시 시도해주세요.");
         setOverlayStatus(false); //수정 불가 창업데이트
       });
-    //console.log("MoneyPlanPage dataToSend : ", dataToSend); // 전송할 데이터 확인
   };
   // 이달의 플랜 가져오기
   const getplan = (e) => {
@@ -157,7 +152,10 @@ const MoneyPlanPage = () => {
           { label: "쇼핑", value: planData.shopping ?? 0 },
           { label: "교통", value: planData.transport ?? 0 },
           { label: "저축", value: planData.saving ?? 0 },
-          { label: "기타", value: planData.others ?? 0 },
+          {
+            label: plan.others?.name || "기타",
+            value: parseValue(plan.others?.value),
+          },
         ]);
         setIsLoading(false);
         console.log("머니플랜페이지의 ", plan);
@@ -171,12 +169,25 @@ const MoneyPlanPage = () => {
         setErrorMessage("전송 중 오류가 발생했습니다. 다시 시도해주세요.");
       });
   };
+  //모달에 표시하기 위해서 포맷팅하기
+  const formattedPlan = [
+    { label: "편의점", value: plan.cvs },
+    { label: "음식", value: plan.food },
+    { label: "쇼핑", value: plan.shopping },
+    { label: "교통", value: plan.transport },
+    { label: "저축", value: plan.saving },
+    { label: plan.others?.name || "기타", value: plan.others?.value || 0 },
+  ];
+
   const isMatchingDate =
     selectedYear === currentYear && selectedMonth === currentMonth;
   console.log("선택된 날짜", selectedYear, selectedMonth);
   // 숫자를 원화 형식으로 포맷 (예: 1,000,000)
   const formatCurrency = (value) => {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (value == null || isNaN(value)) {
+      return "0"; // 기본값으로 "0" 반환
+    }
+    return parseInt(value, 10).toLocaleString("ko-KR"); // 한국 원화 포맷
   };
   return (
     <>
@@ -190,7 +201,7 @@ const MoneyPlanPage = () => {
         {overlayStatus && isMatchingDate && (
           <OverlayDiv>
             <OverlayMessage>
-              계획 전송이 성공적으로 완료되었습니다!
+              계획 전송 완료! 부모님이 계획을 확인 중이에요!
             </OverlayMessage>
           </OverlayDiv>
         )}
@@ -220,7 +231,7 @@ const MoneyPlanPage = () => {
           <ModalTitle>보낼 계획 내용</ModalTitle>
           <ModalTextBox>
             {/* dataValues 배열을 순회하며 데이터를 표시 */}
-            {plan.map((item, index) => (
+            {formattedPlan.map((item, index) => (
               <p key={index}>
                 <strong>{item.label}:</strong> {formatCurrency(item.value)}원
               </p>
@@ -258,7 +269,6 @@ const Wapper = styled.div`
   justify-content: center;
   gap: 30px;
   position: relative; /* OverlayDiv 위치 제어를 위해 추가 */
-
   margin-bottom: 50px;
 `;
 
@@ -309,13 +319,14 @@ const BtnWapper = styled.div`
 const OverlayDiv = styled.div`
   position: absolute; /* Wapper 내부에서 위치 고정 */
   top: 0;
-  left: 130px;
-  width: 80%; /* Wapper의 전체 너비 */
-  height: 95%; /* Wapper의 전체 높이 */
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  left: 20px;
+  width: 95%; /* Wapper의 전체 너비 */
+  height: 100%; /* Wapper의 전체 높이 */
+  background-color: rgba(255, 255, 255, 0.8); /* 반투명 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
   z-index: 1000; /* Wapper의 다른 요소 위에 표시 */
 `;
 const OverlayMessage = styled.h1`
@@ -323,7 +334,7 @@ const OverlayMessage = styled.h1`
   font-size: 24px;
   font-weight: bold;
   text-align: center;
-  background: #4829d7;
+  background: #9774fb;
   padding: 20px;
   border-radius: 8px;
 `;

@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { color } from "../../../../node_modules/tailwindcss/src/util/dataTypes";
 
+const img = [
+  `${process.env.PUBLIC_URL}/images/PlanPageimg.png`,
+  `${process.env.PUBLIC_URL}/images/QuizPageimg.png`,
+  `${process.env.PUBLIC_URL}/images/WishPageimg.png`,
+];
+
 // 상세내용 컴포넌트
 const Card = ({ title, text, src }) => {
   return (
@@ -9,7 +15,9 @@ const Card = ({ title, text, src }) => {
       <SubTitle>{title}</SubTitle>
       <Description>{text}</Description>
       {/* 도니모니 화면 캡쳐 이미지 */}
-      <ImageContainer>{/* <img  src={src}/> */}</ImageContainer>
+      <ImageContainer>
+        <img src={src} />
+      </ImageContainer>
     </>
   );
 };
@@ -21,14 +29,17 @@ export const Landing3 = () => {
     용돈계획서: {
       title: "용돈계획서를 작성하고 관리하세요!",
       text: "아이가 용돈계획서를 스스로 작성하고 실제 소비와 비교해볼 수 있습니다.",
+      src: `${process.env.PUBLIC_URL}/images/PlanPageimg.png`,
     },
     경제배우기: {
       title: "경제 개념을 쉽게 배워보세요!",
       text: "경제 용어, 투자, 환율 등 카테고리에 따라 영상과 퀴즈를 통해 쉽게 배워볼 수 있습니다.",
+      src: `${process.env.PUBLIC_URL}/images/QuizPageimg.png`,
     },
     내꿈모으기: {
       title: "나의 꿈을 이루기 위한 계획을 세워보세요!",
       text: "위시리스트에 원하는 목표를 올리고, 적금하는 방식을 통해 저축 습관을 길러보세요.",
+      src: `${process.env.PUBLIC_URL}/images/WishPageimg.png`,
     },
   };
   return (
@@ -60,6 +71,7 @@ export const Landing3 = () => {
           <Card
             title={cards[selectedButton].title}
             text={cards[selectedButton].text}
+            src={cards[selectedButton].src}
           />
         )}
       </Content>

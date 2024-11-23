@@ -38,7 +38,7 @@ const SendMessage = ({ childNum }) => {
     if (notificationData.message !== "") {
       axios({
         method: "POST",
-        url: `${process.env.REACT_APP_BASE_URL}/notification/sendToChild`,
+        url: `/notification/sendToChild`,
         data: notificationData,
         headers: {
           Authorization: `${token}`,
