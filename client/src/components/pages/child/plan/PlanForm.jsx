@@ -31,42 +31,18 @@ const PlanForm = () => {
 
   // 초기값을 API에서 가져오기
   useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: `/children/show/plans?year=${currentYear}&month=${currentMonth}`,
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
-        });
-        console.log("Initial API Response:", response.data);
-
-        // 가져온 데이터를 PlanContext와 formData에 설정
-        const planData = response.data;
-
-        setFormData({
-          food: planData.food || 0,
-          cvs: planData.cvs || 0,
-          shopping: planData.shopping || 0,
-          transport: planData.transport || 0,
-          saving: planData.saving || 0,
-          others: {
-            name: planData.saving.name, // 이름 필드
-            value: planData.saving.value, // 값 필드
-          },
-        });
-      } catch (error) {
-        console.error(
-          "Error fetching initial data:",
-          error.response || error.message
-        );
-      }
-    };
-
-    fetchInitialData();
-  }, []);
+    setFormData({
+      food: plan.food,
+      cvs: plan.cvs,
+      shopping: plan.shopping,
+      transport: plan.transport,
+      saving: plan.saving,
+      others: {
+        name: plan.others?.name,
+        value: plan.others?.value,
+      },
+    });
+  }, [plan]);
 
   const handleInputChange = (e) => {
     const { name, value, dataset } = e.target;
