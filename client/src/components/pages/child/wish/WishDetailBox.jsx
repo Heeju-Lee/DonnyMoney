@@ -158,8 +158,10 @@ const WishDetailBox = ({ selectedCard, onSendData }) => {
             ></ProgressBar>
           </DetailTextBox>
         </DetailBox>
-        <DeleteWish>위시 삭제</DeleteWish>
-        <CollectMoney onClick={inserModalOpen}>돈모으기</CollectMoney>
+        <ButtonSection>
+          <DeleteWish>위시 삭제</DeleteWish>
+          <CollectMoney onClick={inserModalOpen}>돈모으기</CollectMoney>
+        </ButtonSection>
       </WishDetailBack>
       {/* 돈모으기 모달이 열렸을 때만 표시 */}
       {isModalOpen && (
@@ -191,22 +193,28 @@ const WishDetailBox = ({ selectedCard, onSendData }) => {
   );
 };
 const WishDetailBack = styled.div`
-  background-color: #ececec;
+  /* background-color: #ececec; */
+  background-color: #ffffff;
+  border-radius: 20px;
   margin-top: 100px;
+  padding: 30px;
+
+  width: 80%;
+  margin: 100px auto 0;
 `;
 const Title = styled.h3`
-  color: black;
   text-align: center;
-  padding-top: 50px;
   font-weight: bold;
 `;
 const ModalTitle = styled.h3`
-  color: black;
   text-align: center;
   font-weight: bold;
 `;
 const DetailBox = styled.div`
   display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
 `;
 
 const InsertPreview = styled.img`
@@ -230,30 +238,35 @@ const DetailTextBox = styled.div`
   align-items: flex-start;
 `;
 const DetailText = styled.h5`
-  color: black;
   text-align: center;
   padding-top: 10px;
   font-weight: bold;
 `;
+
+const ButtonSection = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
 const DeleteWish = styled.button`
-  background-color: #4829d7;
+  background-color: #f98d5a;
   color: white;
   font-style: bold;
   font-size: 1.2rem;
-  border: 2px solid #4829d7;
-  border-radius: 10px;
+  border: 2px solid #f98d5a;
+  border-radius: 25px;
   width: 15vw;
   height: 5.8vh;
   margin-top: 1vh;
   font-weight: bold;
 `;
 const CollectMoney = styled.button`
-  background-color: #4829d7;
+  background-color: #9068dc;
   color: white;
   font-style: bold;
   font-size: 1.2rem;
-  border: 2px solid #4829d7;
-  border-radius: 10px;
+  border: 2px solid #9068dc;
+  border-radius: 25px;
   width: 15vw;
   height: 5.8vh;
   margin-top: 1vh;
