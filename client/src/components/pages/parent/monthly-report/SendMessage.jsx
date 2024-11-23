@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form, FormControl } from "react-bootstrap";
 import { Button } from "../../../commons/Button";
@@ -7,7 +7,7 @@ import styled from "styled-components";
 const SendMessage = ({ childNum }) => {
   const token = localStorage.getItem("Authorization");
 
-  console.log("SendMessage childNum : ", childNum);
+  // console.log("SendMessage childNum : ", childNum);
 
   const [notificationData, setNotificationData] = useState({
     parentNum: localStorage.getItem("memberNo"),
@@ -16,6 +16,14 @@ const SendMessage = ({ childNum }) => {
     category: "parentMsg",
     senderType: "parent",
   });
+
+  // childNum이 변경될 때 notificationData 업데이트
+  useEffect(() => {
+    setNotificationData((prevData) => ({
+      ...prevData,
+      childNum: childNum, // 새로운 childNum으로 업데이트
+    }));
+  }, [childNum]); // childNum 변경 시 동작
 
   // message 변경 함수
   const changeMessage = (e) => {
@@ -49,6 +57,7 @@ const SendMessage = ({ childNum }) => {
       alert("메세지를 입력해주세요.");
     }
   };
+
   return (
     <ContainAll>
       <ContainContent>
