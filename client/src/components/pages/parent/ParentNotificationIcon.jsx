@@ -44,8 +44,7 @@ export const ParentNotificationIcon = () => {
 
   // SSE 연결
   const { eventSource, connectionError } = useSSE(
-    `/notification/subscribe/${memberNo}`,
-    `/notification/subscribe/parent/${memberNo}`,
+    `${process.env.REACT_APP_BASE_URL}/notification/subscribe/parent/${memberNo}`, //! 절대경로유지 axios.defaults.baseURL 설정 사용할 수 없음
     (notification) => {
       // try {
       //   if (

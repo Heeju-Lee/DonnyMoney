@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { color } from "../../../../node_modules/tailwindcss/src/util/dataTypes";
 
 const img = [
   `${process.env.PUBLIC_URL}/images/PlanPageimg.png`,
@@ -16,7 +15,7 @@ const Card = ({ title, text, src }) => {
       <Description>{text}</Description>
       {/* 도니모니 화면 캡쳐 이미지 */}
       <ImageContainer>
-        <img src={src} />
+        <img src={src} alt="" />
       </ImageContainer>
     </>
   );
@@ -156,11 +155,17 @@ const Description = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  border: 1px solid lightgray;
-  width: 100%;
+  /* border: 1px solid lightgray; */
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   height: 400px;
+  background-color: #ffffff;
+
   img {
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    height: 95%;
   }
 `;
