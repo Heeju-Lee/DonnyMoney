@@ -44,7 +44,6 @@ export const ParentNotificationIcon = () => {
 
   // SSE 연결
   const { eventSource, connectionError } = useSSE(
-    `/notification/subscribe/${memberNo}`,
     `/notification/subscribe/parent/${memberNo}`,
     (notification) => {
       // try {
