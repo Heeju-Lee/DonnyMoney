@@ -17,7 +17,6 @@ const SendMessage = ({ childNum }) => {
     senderType: "parent",
   });
 
-  // childNum이 변경될 때 notificationData 업데이트
   useEffect(() => {
     setNotificationData((prevData) => ({
       ...prevData,
