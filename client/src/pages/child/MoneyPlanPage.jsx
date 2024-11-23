@@ -64,7 +64,7 @@ const MoneyPlanPage = () => {
 
   const handleSend = () => {
     // 모달을 열기 전에 Context 값을 기반으로 동기화
-    console.log("모달 열기전 plan", plan);
+    // console.log("모달 열기전 plan", plan);
     setPlan([
       { label: "쇼핑", value: plan.shopping ?? 0 },
       { label: "교통", value: plan.transport ?? 0 },
@@ -73,12 +73,12 @@ const MoneyPlanPage = () => {
       { label: "기타", value: plan.others ?? 0 },
       { label: "저축", value: plan.saving ?? 0 },
     ]);
-    console.log("모달 연 후  plan", plan);
+    // console.log("모달 연 후  plan", plan);
     setModalOpen(true); // "부모님한테 보내기" 버튼 클릭 시 모달 열기
   };
   //console.log("db로 보낼 데이터", dataToSend);
-  console.log("MoneyPlanPage plan : ", plan);
-  console.log("MoneyPlanPage dataValues : ", plan);
+  // console.log("MoneyPlanPage plan : ", plan);
+  // console.log("MoneyPlanPage dataValues : ", plan);
 
   //나중에 로컬스토리지에서 데이터 받아오는거롤 수정해야함
   const token = authorization;
@@ -89,7 +89,7 @@ const MoneyPlanPage = () => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     setIsLoading(true);
     setErrorMessage(null);
-    console.log("데이터 보내기 전의 plan", plan);
+    // console.log("데이터 보내기 전의 plan", plan);
     // 요청할 데이터를 변환하는 함수
     const transformPlanToRequestFormat = () => {
       return {
@@ -102,7 +102,7 @@ const MoneyPlanPage = () => {
       };
     };
     const requestBody = transformPlanToRequestFormat();
-    console.log("보낼 데이터를 다시 확인하기", requestBody);
+    // console.log("보낼 데이터를 다시 확인하기", requestBody);
     axios({
       method: "POST",
       url: `/children/plans?year=${currentYear}&month=${currentMonth}`,
@@ -113,12 +113,10 @@ const MoneyPlanPage = () => {
       },
     })
       .then((res) => {
-        // console.log("dataToSend=======", plan);
-        // console.log("axios res", res);
         setModalOpen(false); // 모달 닫기
         setIsLoading(false); // 로딩 상태 해제
 
-        console.log("authorization : ", authorization);
+        // console.log("authorization : ", authorization);
 
         setOverlayStatus(true); //수정 불가 창업데이트
         sendNotificationToParent(
@@ -131,8 +129,6 @@ const MoneyPlanPage = () => {
       })
       .catch((err) => {
         console.error("Error:", err.message); // 오류 메시지 출력
-        console.error("Error response:", err.response); // 서버 응답 (응답이 있을 경우)
-        console.error("Error stack:", err.stack); // 오류 스택 추적
         setIsLoading(false); // 로딩 상태 해제
         setErrorMessage("전송 중 오류가 발생했습니다. 다시 시도해주세요.");
         setOverlayStatus(false); //수정 불가 창업데이트

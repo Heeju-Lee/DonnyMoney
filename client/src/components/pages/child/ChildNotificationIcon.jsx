@@ -44,7 +44,7 @@ export const ChildNotificationIcon = () => {
   };
   // SSE 연결
   const { eventSource, connectionError } = useSSE(
-    `${process.env.REACT_APP_BASE_URL}/notification/subscribe/${memberNo}`,
+    `${process.env.REACT_APP_BASE_URL}/notification/subscribe/child/${memberNo}`,
     (notification) => {
       try {
         if (

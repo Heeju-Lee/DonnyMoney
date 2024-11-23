@@ -44,18 +44,35 @@ export const ParentNotificationIcon = () => {
 
   // SSE 연결
   const { eventSource, connectionError } = useSSE(
-    `${process.env.REACT_APP_BASE_URL}/notification/subscribe/${memberNo}`,
+    `${process.env.REACT_APP_BASE_URL}/notification/subscribe/parent/${memberNo}`,
     (notification) => {
+      // try {
+      //   if (
+      //     notification.notiNum !== -1 &&
+      //     notification.senderType === "child"
+      //   ) {
+      //     setNotifications((prev) => [notification, ...prev]); // 알림 목록 업데이트
+      //     setHasUnread(true); // 새 알림이 오면 미읽은 상태로 나타냄
+      //   }
+      // } catch (err) {
+      //   console.log("SSE 데이터 파싱 에러 : ", err);
+      // }
+      // 수정된 부분: SSE 이벤트 처리 개선
       try {
         if (
           notification.notiNum !== -1 &&
           notification.senderType === "child"
         ) {
-          setNotifications((prev) => [notification, ...prev]); // 알림 목록 업데이트
-          setHasUnread(true); // 새 알림이 오면 미읽은 상태로 나타냄
+          console.log("[SSE] 새로운 알림 수신:", notification);
+          setNotifications((prev) => {
+            const updated = [notification, ...prev];
+            console.log("[알림 업데이트] 업데이트된 알림 목록:", updated);
+            return updated;
+          });
+          setHasUnread(true); // 새 알림이 오면 미읽은 상태로 표시
         }
       } catch (err) {
-        console.log("SSE 데이터 파싱 에러 : ", err);
+        console.error("[SSE] 알림 데이터 처리 중 에러:", err); // 수정된 부분: 에러 로그 추가
       }
     }
   );
@@ -64,7 +81,7 @@ export const ParentNotificationIcon = () => {
   useEffect(() => {
     setListOpen(false);
     getNotifications();
-  }, []);
+  }, [memberNo, authorization]); // 수정된 부분: 의존성 배열에 추가
 
   // 알림 목록 변경시 로그출력해봄
   // useEffect(() => {
