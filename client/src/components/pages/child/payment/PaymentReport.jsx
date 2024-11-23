@@ -62,7 +62,7 @@ const PaymentReport = () => {
   // 내 포인트 가져오기
   const showPoint = () => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/children/get/point`, {
+      .get(`/children/get/point`, {
         headers: {
           Authorization: localStorage.getItem("Authorization"),
         },
@@ -79,7 +79,7 @@ const PaymentReport = () => {
   // 이번 달 내가 쓴 돈 가져오기
   const showMonthList = () => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/children/payments`, {
+      .get(`/children/payments`, {
         params: {
           year: year,
           month: month,
@@ -89,7 +89,7 @@ const PaymentReport = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log("달에 쓴 돈 보여주기", res.data);
         setIsMonthList(true);
         setIsChartVisible(false);
         setMonthList(res.data); // 데이터를 상태에 저장
@@ -102,7 +102,7 @@ const PaymentReport = () => {
   // 선택한 달의 소비 카테고리별로 가져오기
   const showPaymentChart = () => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/children/payments/chart`, {
+      .get(`/children/payments/chart`, {
         params: {
           year: year,
           month: month,
@@ -125,7 +125,7 @@ const PaymentReport = () => {
   // 선택한 달의 계획 카테고리별로 가져오기
   const showPlanChart = () => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/children/plan/chart`, {
+      .get(`/children/plan/chart`, {
         params: {
           year: year,
           month: month,

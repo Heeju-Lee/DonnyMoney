@@ -26,6 +26,7 @@ export const ChildNotificationIcon = () => {
     setNotifications(data);
     setHasUnread(data.some((noti) => !noti.isRead)); // 미읽은 알림이 있는지 확인
   };
+
   // 알림 읽음 처리
   const handleRead = async (notiNum, category) => {
     await updateRead(notiNum, authorization);
@@ -44,7 +45,7 @@ export const ChildNotificationIcon = () => {
   };
   // SSE 연결
   const { eventSource, connectionError } = useSSE(
-    `${process.env.REACT_APP_BASE_URL}/notification/subscribe/${memberNo}`,
+    `/notification/subscribe/child/${memberNo}`,
     (notification) => {
       try {
         if (

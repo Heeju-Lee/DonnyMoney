@@ -61,7 +61,7 @@ const SelectOptionNav = ({
   const getChildrenList = () => {
     axios({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_URL}/parents/findChildren`,
+      url: `/parents/findChildren`,
       headers: {
         Authorization: `${token}`,
       },

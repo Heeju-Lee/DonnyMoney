@@ -154,21 +154,20 @@ const WishDetailBox = ({ selectedCard, onSendData, onCloseDetail }) => {
   );
 };
 const WishDetailBack = styled.div`
-  background-color: white;
-  margin-top: 100px;
-  padding-bottom: 50px;
-  width: 1000px;
-  margin-left: 130px;
+  /* background-color: #ececec; */
+  background-color: #ffffff;
   border-radius: 20px;
+  margin-top: 100px;
+  padding: 30px;
+  width: 80%;
+  margin: 100px auto 0;
 `;
 const Title = styled.h3`
-  color: black;
   text-align: center;
   padding-top: 20px;
   font-weight: bold;
 `;
 const ModalTitle = styled.h3`
-  color: black;
   text-align: center;
   font-weight: bold;
   margin-left: 100px;
@@ -188,6 +187,8 @@ const ModalWapper = styled.div`
   justify-content: space-around;
   align-items: flex-end;
   margin-bottom: 10px;
+  gap: 30px;
+  margin: 30px 0;
 `;
 const InsertPreview = styled.img`
   width: 15vw;
@@ -212,22 +213,28 @@ const DetailTextBox = styled.div`
   margin-top: 10px;
 `;
 const DetailText = styled.h5`
-  color: black;
   text-align: center;
   padding-top: 10px;
   font-weight: bold;
 `;
+
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 15px;
 `;
+
+const ButtonSection = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
 const DeleteWish = styled.button`
-  background-color: #f77833;
+  background-color: #f98d5a;
   color: white;
   font-style: bold;
   font-size: 1.2rem;
-  border: 2px solid #f77833;
+  border: 2px solid #f98d5a;
   border-radius: 10px;
   width: 10vw;
   height: 5.8vh;
@@ -273,4 +280,5 @@ const ProgressBar = styled.div`
     transition: width 0.3s ease-in-out;
   }
 `;
+
 export default WishDetailBox;
