@@ -73,9 +73,6 @@ const MoneyPlanPage = () => {
     console.log("모달 연 후  plan", plan);
     setModalOpen(true); // "부모님한테 보내기" 버튼 클릭 시 모달 열기
   };
-  //console.log("db로 보낼 데이터", dataToSend);
-  // console.log("MoneyPlanPage plan : ", plan);
-  // console.log("MoneyPlanPage dataValues : ", plan);
 
   //나중에 로컬스토리지에서 데이터 받아오는거롤 수정해야함
   const token = authorization;
@@ -146,6 +143,7 @@ const MoneyPlanPage = () => {
       .then((res) => {
         console.log("axios res------", res);
         const planData = res.data;
+        console.log("해당값확인", planData);
         setPlan([
           { label: "편의점", value: planData.cvs ?? 0 },
           { label: "음식", value: planData.food ?? 0 },
