@@ -151,10 +151,11 @@ const MoneyPlanPage = () => {
           { label: "교통", value: planData.transport ?? 0 },
           { label: "저축", value: planData.saving ?? 0 },
           {
-            label: plan.others?.name || "기타",
-            value: parseValue(plan.others?.value),
+            label: planData.others?.name || "기타",
+            value: parseValue(planData.others),
           },
         ]);
+        console.log("머니 플랜페이지의 기타 ", planData.others);
         setIsLoading(false);
         console.log("머니플랜페이지의 ", plan);
       })

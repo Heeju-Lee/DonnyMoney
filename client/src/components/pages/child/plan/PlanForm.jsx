@@ -32,75 +32,63 @@ const PlanForm = () => {
     },
   });
 
-<<<<<<< HEAD
-  const token = authorization; //토큰 값 가져오기
-  const today = new Date(); // 날짜 가져오기
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1;
-
-=======
->>>>>>> f69cf41fdfeeb3d9d6aa363a594569670ab8f388
   // 초기값을 API에서 가져오기
   useEffect(() => {
-    console.log("plan이 변경됨:", plan);
+    console.log("1. plan이 변경됨 :", plan);
 
-    if (plan) {
-      let updatedFormData;
-
-      // 배열일 경우 처리
-      if (Array.isArray(plan)) {
-        console.log("배열로 들어옴");
-        const cvs = plan.find((item) => item.label === "편의점")?.value || 0;
-        const food = plan.find((item) => item.label === "음식")?.value || 0;
-        const shopping = plan.find((item) => item.label === "쇼핑")?.value || 0;
-        const transport =
-          plan.find((item) => item.label === "교통")?.value || 0;
-        const saving = plan.find((item) => item.label === "저축")?.value || 0;
-        const others = plan.find((item) => item.label === "기타")?.value || 0;
-
-        updatedFormData = {
-          cvs,
-          food,
-          shopping,
-          transport,
-          saving,
-          others: {
+    const defaultValues = {
+        cvs: 0,
+        food: 0,
+        shopping: 0,
+        transport: 0,
+        saving: 0,
+        others: {
             name: "기타",
-            value: others,
-          },
-        };
-      }
-      // 객체일 경우 처리
-      else if (typeof plan === "object") {
-        console.log("객체로 들어옴");
-        const cvs = plan.cvs || 0;
-        const food = plan.food || 0;
-        const shopping = plan.shopping || 0;
-        const transport = plan.transport || 0;
-        const saving = plan.saving || 0;
-        const others = plan.others.value || 0;
-        const othersName = plan.others.name || null;
-        console.log("plan을 확인", plan);
-        console.log("기타만 확인", plan.others.value);
-        updatedFormData = {
-          cvs,
-          food,
-          shopping,
-          transport,
-          saving,
-          others: {
-            name: othersName,
-            value: others,
-          },
-        };
-      }
+            value: 0,
+        },
+    };
 
-      if (updatedFormData) {
+    let updatedFormData = null;
+
+    if (Array.isArray(plan)) {
+        console.log("배열로 들어옴");
+        updatedFormData = {
+            cvs: plan.find((item) => item.label === "편의점")?.value || 0,
+            food: plan.find((item) => item.label === "음식")?.value || 0,
+            shopping: plan.find((item) => item.label === "쇼핑")?.value || 0,
+            transport: plan.find((item) => item.label === "교통")?.value || 0,
+            saving: plan.find((item) => item.label === "저축")?.value || 0,
+            others: {
+                name: "기타",
+                value: plan.find((item) => item.label === "기타")?.value || 0,
+            },
+        };
+    } else if (typeof plan === "object" && plan !== null) {
+        console.log("객체로 들어옴");
+        console.log("기타", plan.others?.name);
+        console.log("기타값", plan.others);
+        updatedFormData = {
+            cvs: plan.cvs || 0,
+            food: plan.food || 0,
+            shopping: plan.shopping || 0,
+            transport: plan.transport || 0,
+            saving: plan.saving || 0,
+            others: {
+                name: plan.others?.name || "기타",
+                value: plan.others ||  plan.others?.value,
+            },
+        };
+    } else if (!plan) {
+        console.log("값이 없음 또는 undefined/null");
+        updatedFormData = { ...defaultValues };
+    }
+
+    if (updatedFormData) {
         console.log("업데이트될 FormData:", updatedFormData);
         setFormData(updatedFormData);
-      }
     }
-  }, [plan]);
+}, [plan]);
+
 
   const handleInputChange = (e) => {
     const { name, value, dataset } = e.target;
@@ -130,7 +118,7 @@ const PlanForm = () => {
       }
     });
   };
-  // 수정한 Form값 Plan으로 보내기
+
   const handleUpdatePlan = () => {
     setPlan((prevPlan) => ({
       ...prevPlan,
