@@ -136,8 +136,8 @@ const PlanForm = () => {
     others: plan.others,
   });
 
-  const token = authorization;
-  const today = new Date();
+  const token = authorization; //토큰 값 가져오기
+  const today = new Date(); // 날짜 가져오기
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth() + 1;
 
@@ -186,7 +186,7 @@ const PlanForm = () => {
       [name]: numericValue,
     }));
   };
-
+  // 수정한 Form값 Plan으로 보내기
   const handleUpdatePlan = () => {
     console.log("Updating Plan:", formData);
     setPlan(formData);
