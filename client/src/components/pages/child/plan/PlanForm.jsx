@@ -37,63 +37,61 @@ const PlanForm = () => {
     console.log("1. plan이 변경됨 :", plan);
 
     const defaultValues = {
-        cvs: 0,
-        food: 0,
-        shopping: 0,
-        transport: 0,
-        saving: 0,
-        others: {
-            name: "기타",
-            value: 0,
-        },
+      cvs: 0,
+      food: 0,
+      shopping: 0,
+      transport: 0,
+      saving: 0,
+      others: {
+        name: "기타",
+        value: 0,
+      },
     };
 
     let updatedFormData = null;
 
     if (Array.isArray(plan)) {
-        console.log("배열로 들어옴");
-        updatedFormData = {
-            cvs: plan.find((item) => item.label === "편의점")?.value || 0,
-            food: plan.find((item) => item.label === "음식")?.value || 0,
-            shopping: plan.find((item) => item.label === "쇼핑")?.value || 0,
-            transport: plan.find((item) => item.label === "교통")?.value || 0,
-            saving: plan.find((item) => item.label === "저축")?.value || 0,
-            others: {
-                name: "기타",
-                value: plan.find((item) => item.label === "기타")?.value || 0,
-            },
-        };
+      console.log("배열로 들어옴");
+      updatedFormData = {
+        cvs: plan.find((item) => item.label === "편의점")?.value || 0,
+        food: plan.find((item) => item.label === "음식")?.value || 0,
+        shopping: plan.find((item) => item.label === "쇼핑")?.value || 0,
+        transport: plan.find((item) => item.label === "교통")?.value || 0,
+        saving: plan.find((item) => item.label === "저축")?.value || 0,
+        others: {
+          name: "기타",
+          value: plan.find((item) => item.label === "기타")?.value || 0,
+        },
+      };
     } else if (typeof plan === "object" && plan !== null) {
       console.log("객체로 들어옴");
-  
+
       const others =
-          typeof plan.others === "object" && plan.others !== null
-              ? {
-                    name: plan.others.name || "기타",
-                    value: plan.others.value || 0,
-                }
-              : { name: "기타", value: 0 };
-  
+        typeof plan.others === "object" && plan.others !== null
+          ? {
+              name: plan.others.name || "기타",
+              value: plan.others.value || 0,
+            }
+          : { name: "기타", value: 0 };
+
       updatedFormData = {
-          cvs: plan.cvs || 0,
-          food: plan.food || 0,
-          shopping: plan.shopping || 0,
-          transport: plan.transport || 0,
-          saving: plan.saving || 0,
-          others,
+        cvs: plan.cvs || 0,
+        food: plan.food || 0,
+        shopping: plan.shopping || 0,
+        transport: plan.transport || 0,
+        saving: plan.saving || 0,
+        others,
       };
-  }
-   else if (!plan) {
-        console.log("값이 없음 또는 undefined/null");
-        updatedFormData = { ...defaultValues };
+    } else if (!plan) {
+      console.log("값이 없음 또는 undefined/null");
+      updatedFormData = { ...defaultValues };
     }
 
     if (updatedFormData) {
-        console.log("업데이트될 FormData:", updatedFormData);
-        setFormData(updatedFormData);
+      console.log("업데이트될 FormData:", updatedFormData);
+      setFormData(updatedFormData);
     }
-}, [plan]);
-
+  }, [plan]);
 
   const handleInputChange = (e) => {
     const { name, value, dataset } = e.target;
@@ -123,7 +121,7 @@ const PlanForm = () => {
       }
     });
   };
-console.log("formData를 확인", formData);
+  console.log("formData를 확인", formData);
   const handleUpdatePlan = () => {
     setPlan((prevPlan) => ({
       ...prevPlan,
@@ -217,6 +215,7 @@ console.log("formData를 확인", formData);
             />
             <FormTitle>저축</FormTitle>
           </FormBox>
+
           <FormInput
             type="text"
             name="saving"
@@ -233,6 +232,7 @@ console.log("formData를 확인", formData);
             />
           </PlusBtn>
         )}
+
         {isupdate && (
           <FormG>
             <FormBox>
@@ -376,6 +376,7 @@ const OtherForm = styled.input`
   width: 80px;
   height: 30px;
   margin-left: 3px;
+  text-align: center;
 `;
 const UpdateForm = styled.input`
   padding: 8px;
@@ -384,5 +385,6 @@ const UpdateForm = styled.input`
   outline: none;
   width: 210px;
   margin-left: -15px;
+  text-align: center;
 `;
 export default PlanForm;
