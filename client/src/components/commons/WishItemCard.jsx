@@ -74,6 +74,8 @@ const Card = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
+  margin: 0 auto;
+
   /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
 
   /* 만료된 카드 스타일 */
@@ -117,15 +119,14 @@ const ProgressBar = styled.div`
   border-radius: 10px;
   overflow: hidden;
   margin: 10px 0;
-  background-color: #4caf50;
 
   &::before {
-    /* content: "";
+    content: "";
     position: absolute;
     height: 100%;
     width: ${(props) => props.$progressRate || 0}%;
-    transition: width 0.3s ease-in-out; */
-    /* background-color: #fff9b1; */
+    transition: width 0.3s ease-in-out;
+    background-color: #4caf50;
   }
 `;
 const ItemDetail = styled.div`

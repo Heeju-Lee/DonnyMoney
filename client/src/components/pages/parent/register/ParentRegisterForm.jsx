@@ -43,7 +43,7 @@ const RegisterPage = () => {
     if (e.target.name === "id" && e.target.value.trim() !== "") {
       axios({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_URL}/parents/signup/${e.target.value}`,
+        url: `/parents/signup/${e.target.value}`,
       })
         .then((res) => {
           // console.log(res);
@@ -61,7 +61,7 @@ const RegisterPage = () => {
   const submitJoin = (e) => {
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_BASE_URL}/parents/signup`,
+      url: `/parents/signup`,
       data: parent,
     })
       .then((res) => {
@@ -205,6 +205,7 @@ export default RegisterPage;
 
 const Container = styled.div`
   width: 600px;
+
   margin: 0 auto;
 `;
 

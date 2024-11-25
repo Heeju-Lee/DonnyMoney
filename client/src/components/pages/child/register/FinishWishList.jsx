@@ -6,7 +6,7 @@ import { wishFinishListDummyData } from "../../../../data/wishFinishListDummyDat
 
 // 성공한 위시 페이지
 export const FinishWishList = () => {
-  console.log("FinishWishList : ", wishFinishListDummyData);
+  // console.log("FinishWishList : ", wishFinishListDummyData);
 
   return (
     <Outer>
@@ -16,7 +16,7 @@ export const FinishWishList = () => {
         {wishFinishListDummyData.map((item, index) => (
           <ItemContainer>
             <Icon>
-              <img src="/icons/celebrate5.png" />
+              <img src="/icons/celebrate5.png" alt="" />
             </Icon>
             <WishItemCard
               key={index}
@@ -27,7 +27,8 @@ export const FinishWishList = () => {
               cardWidth={"260px"}
               cardHeight={"350px"}
               cardPadding={"25px"}
-              cardBgColor={"#9774FB"}
+              // cardBgColor={"#C0A9EF"}
+              cardBgColor={"#9068DC"}
               cardFontColor={"#ffffff"}
               isExpired={true}
             />
@@ -40,7 +41,7 @@ export const FinishWishList = () => {
 
 const Outer = styled.div`
   width: 100%;
-  margin-top: 80px;
+  margin-top: 100px;
   margin-bottom: 80px;
 
   /* border: 1px solid red; */

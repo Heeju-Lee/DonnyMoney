@@ -200,7 +200,12 @@ const Agreement = ({
                 {contractData.categories.map((category, index) => (
                   <CategoryRow key={index}>
                     <Category>{category.name}</Category>
-                    <Amount>{category.amount.toLocaleString()} 원</Amount>
+                    <Amount>
+                      <span className="priceText">
+                        {category.amount.toLocaleString()}
+                      </span>
+                      &nbsp;원
+                    </Amount>
                   </CategoryRow>
                 ))}
               </CategoryList>
@@ -208,7 +213,10 @@ const Agreement = ({
               <TotalAmount>
                 <TotalText>총 용돈 금액 : </TotalText>
                 <TotalPrice>
-                  {contractData.totalAmount.toLocaleString()} 원
+                  <span className="priceText">
+                    {contractData.totalAmount.toLocaleString()}
+                  </span>
+                  &nbsp;원
                 </TotalPrice>
               </TotalAmount>
               <Sign>
@@ -263,26 +271,33 @@ const Outer = styled.div`
   max-width: 100%;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  background-color: ${({ hasPlan, isCurrent }) =>
-    hasPlan && !isCurrent ? "gray" : "transparent"};
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); */
+  /* background-color: ${({ hasPlan, isCurrent }) =>
+    hasPlan && !isCurrent ? "gray" : "transparent"}; */
   color: ${({ hasPlan, isCurrent }) =>
     hasPlan && !isCurrent ? "white" : "black"};
+
+  /* border: 1px solid red; */
+  /* background-color: white; */
 `;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 600px;
-  margin: 50px auto;
-  background-color: #f6f2fd;
+  /* max-width: 600px; */
+  max-width: 700px;
+  margin: 0 auto;
+  /* background-color: #f6f2fd; */
   /* background-image: url("images/contract.jpg"); */
-  padding: 20px;
+  padding: 50px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   text-align: center;
 
   position: relative;
+  border-radius: 25px;
+
+  background-color: white;
 `;
 
 const ImageWrapper = styled.div`
@@ -304,14 +319,17 @@ const ImageWrapper = styled.div`
 `;
 
 const ContractTitle = styled.h1`
-  color: #8529fd;
+  /* color: #7f56e7; */
+  /* color: #5b2b7d; */
+  color: #232323;
   font-size: 40px;
   margin-bottom: 10px;
 `;
 
 const ContractSubTitle = styled.h3`
   font-family: "HakgyoansimDunggeunmisoTTF-R";
-  color: #7f56e7;
+  /* color: #7f56e7; */
+  /* color: #5b2b7d; */
   font-size: 20px;
   margin-bottom: 20px;
 `;
@@ -330,11 +348,13 @@ const DetailRow = styled.div`
 
 const Label = styled.span`
   font-weight: 600;
-  color: #5b2b7d;
+  /* color: #5b2b7d; */
+  color: #232323;
 `;
 
 const Value = styled.span`
-  color: #9b59b6;
+  /* color: #9b59b6; */
+  color: #232323;
 `;
 
 const Stamp = styled.div`
@@ -362,11 +382,14 @@ const CategoryRow = styled.div`
 
 const Category = styled.span`
   font-weight: 600;
-  color: #8529fd;
+  /* color: #8529fd; */
 `;
 
 const Amount = styled.span`
-  color: #5b2b7d;
+  /* color: #5b2b7d; */
+  .priceText {
+    color: #7f56e7;
+  }
 `;
 
 const TotalAmount = styled.div`
@@ -374,17 +397,19 @@ const TotalAmount = styled.div`
   font-size: 20px;
   font-weight: 600;
   text-align: right;
-  color: #8529fd;
 `;
 
 const TotalText = styled.span`
-  color: #5b2b7d;
+  /* color: #5b2b7d; */
   font-size: 1.1rem;
 `;
 
 const TotalPrice = styled.span`
-  color: #7f56e7;
   font-size: 20px;
+
+  .priceText {
+    color: #7f56e7;
+  }
 `;
 
 const ButtonWrapper = styled.div`
