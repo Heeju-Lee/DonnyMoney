@@ -30,7 +30,14 @@ public class PointOrder extends Auditable{
 
 	private int amount;
 	private String payType;
-	private Long childNum; // 받는 사람으로 바꿔야 하나..?
+	private Long childNum; 
+	
+	//카카오페이를 위한 추가
+	@Column
+	private String tid;
+	
+	@Column
+	private String ordStatus;
 	
 	@Override
 	public String toString() {

@@ -22,17 +22,24 @@ public class NotificationRequestDto {
 	@NotNull
 	private String senderType; // "parent" , "child"
 	
+	@NotNull
+    private Boolean isRead; // 알림 읽음 여부
+	
 	public NotificationRequestDto() {}
 
+
 	public NotificationRequestDto(Long notiNum, @NotNull Long parentNum, @NotNull Long childNum,
-			@NotNull String message, @NotNull String category, @NotNull String senderType) {
+			@NotNull String message, @NotNull String category, @NotNull String senderType, @NotNull Boolean isRead) {
 		this.notiNum = notiNum;
 		this.parentNum = parentNum;
 		this.childNum = childNum;
 		this.message = message;
 		this.category = category;
 		this.senderType = senderType;
+		this.isRead = isRead;
 	}
+
+
 
 	public Long getNotiNum() {
 		return notiNum;
@@ -82,6 +89,14 @@ public class NotificationRequestDto {
 		this.senderType = senderType;
 	}
 
-	
+
+	public Boolean getIsRead() {
+		return isRead;
+	}
+
+	public void setIsRead(Boolean isRead) {
+		this.isRead = isRead;
+	}
+
 	
 }

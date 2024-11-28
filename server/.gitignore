@@ -35,3 +35,5 @@ build/
 ### protect sensitive Keys - AWS / YOUTUBE API KEYs ###
 application.yml
 
+# macOS specific files
+.DS_Store

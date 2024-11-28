@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter{ //폼값 받는 컨트롤러 역할의 필터
+	
 	private final AuthenticationManager authenticationManager;
 	private final ChildRepository childRepository;
 	private final ParentRepository parentRepository;
@@ -47,14 +48,18 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter{ //폼값 
 		this.childRepository = childRepository;
 		this.parentRepository = parentRepository;
 	}
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-													throws AuthenticationException{
+	
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)throws AuthenticationException{
 		//1. 클라이언트 로그인 요청시 id, password 받아서 출력
 		 String username = null;
-	        String password = null;
-		 try {
+	     String password = null;
+		 
+	     try {
 	            // 요청 본문을 JSON 형식으로 파싱하여 username과 password를 가져옴
+	    	 	System.out.println("1111");
 	            String requestBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
+	            System.out.println(requestBody);
+	            
 	            Map<String, String> requestMap = new Gson().fromJson(requestBody, Map.class);
 	            username = requestMap.get("username");
 	            password = requestMap.get("password");
@@ -122,6 +127,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter{ //폼값 
         map.put("memberNo",member.getMemberNum() );
         map.put("id", member.getId());
         map.put("name", member.getName());
+        map.put("role", member.getRole());
         Gson gson= new Gson();
         String arr = gson.toJson(map);
         response.getWriter().print(arr);

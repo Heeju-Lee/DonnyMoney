@@ -15,5 +15,4 @@ public class DonnyMoneyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DonnyMoneyApplication.class, args);
 	}
-
 }

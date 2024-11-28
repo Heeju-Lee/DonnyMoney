@@ -17,7 +17,7 @@ import com.web.spring.security.CustomMemberDetails;
 import com.web.spring.entity.Wish;
 import com.web.spring.jwt.LoginFilter;
 
-
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +48,7 @@ import com.web.spring.dto.child.wish.WishResponseDto;
 import com.web.spring.dto.parent.ParentResponeseDto;
 import com.web.spring.dto.SignInResponseDto;
 import com.web.spring.dto.SignUpRequestDto;
+import com.web.spring.dto.child.FindMyParentDto;
 import com.web.spring.dto.child.plan.PlanRequestDto;
 import com.web.spring.dto.child.plan.PlanResponseDto;
 import com.web.spring.dto.child.point.PointRequestDto;
@@ -80,24 +81,23 @@ public class ChildController<WishService> {
 				 			 .body(response);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/signup/{id}")
 	public String duplicationCheck(@PathVariable String id){
 		return childService.duplicateCheck(id);
 	}
 
-	@GetMapping("/find/MyParent")
-	public ParentResponeseDto findMyParent() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
-		Member m = customMemberDetails.getMember();
+	@PostMapping("/signup/findMyParent")
+	public ParentResponeseDto findMyParent(@RequestBody FindMyParentDto findMyParentDto) {
 		
-		return childService.findMyParent(m.getMemberNum());
+		return childService.findMyParent(findMyParentDto.getName(),findMyParentDto.getPhone());
+		
 	}
 
 
 /* Plan : 소비 계획 세우기 --------------------------------------------------------------*/
 	@PostMapping("/plans")
-	public ResponseEntity<PlanResponseDto> createPlan( @RequestBody PlanRequestDto planRequestDto){
+	public ResponseEntity<PlanResponseDto> createPlan( @RequestBody PlanRequestDto planRequestDto,@RequestParam  String year,
+			@RequestParam  String month) throws NumberFormatException, Exception{
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
@@ -110,13 +110,16 @@ public class ChildController<WishService> {
 //		
 		
 //		log.info("customMemberDetails =  {} ,{} ,{}, {} ", m.getId(), m.getName(), m.getRole(), m.getMemberNo());
-		
+		PlanResponseDto response = null;
 		
 		//System.out.println(planRequestDto);
-		
-		PlanResponseDto response = childService.createPlan( m.getMemberNum(), planRequestDto);
-
-		
+		PlanResponseDto curPlan = childService.showPlan(m.getMemberNum(), 	Integer.parseInt(year), Integer.parseInt(month));
+		System.out.println(curPlan);
+		if (curPlan == null) {
+			response = childService.createPlan( m.getMemberNum(), planRequestDto);
+		}else {
+		 response = childService.updatePlan(m.getMemberNum(), 	Integer.parseInt(year), Integer.parseInt(month), planRequestDto);
+		}
 		return ResponseEntity.status(HttpStatus.CREATED)
 							 .body(response);
 	}
@@ -139,14 +142,14 @@ public class ChildController<WishService> {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
-	@PutMapping("/plans/{planNum}")
-	public ResponseEntity<PlanResponseDto>updatePlan (@PathVariable String planNum,
-										@RequestBody PlanRequestDto planRequestDto) throws Exception{
-
-		PlanResponseDto plan = childService.updatePlan(Long.parseLong(planNum), planRequestDto);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(plan);	
-	}
+//	@PutMapping("/plans/{planNum}")
+//	public ResponseEntity<PlanResponseDto>updatePlan (@PathVariable String planNum,
+//										@RequestBody PlanRequestDto planRequestDto) throws Exception{
+//
+//		PlanResponseDto plan = childService.updatePlan(Long.parseLong(planNum), planRequestDto);
+//		
+//		return ResponseEntity.status(HttpStatus.OK).body(plan);	
+//	}
 
 	
 /* MGMT  --------------------------------------------------------------*/
@@ -155,7 +158,7 @@ public class ChildController<WishService> {
 
 	@GetMapping("/payments")
 	public ResponseEntity<List<Payment>> showMonthList(	@RequestParam  String year,
-											@RequestParam  String month){
+														@RequestParam  String month){
 	
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
@@ -172,7 +175,7 @@ public class ChildController<WishService> {
 
 	@GetMapping("/payments/chart")
 	public ResponseEntity<HashMap<String, Integer>> showMonthChart(@RequestParam  String year,
-												@RequestParam  String month){
+																	@RequestParam  String month){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
 		Member m = customMemberDetails.getMember();
@@ -187,7 +190,7 @@ public class ChildController<WishService> {
 
 	@GetMapping("/plan/chart")
 	public ResponseEntity<HashMap<String, Integer>> monthPlan(@RequestParam String year,
-									   	@RequestParam String month) {
+									   							@RequestParam String month) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
 		Member m = customMemberDetails.getMember();

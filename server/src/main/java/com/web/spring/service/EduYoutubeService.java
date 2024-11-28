@@ -42,7 +42,7 @@ public class EduYoutubeService {
         YouTube.Search.List search = youtube.search().list(Collections.singletonList("id,snippet"));
         search.setKey(apiKey);
         search.setQ(query);
-        search.setMaxResults(5L);
+        search.setMaxResults(2L);
         
         // 검색 요청 실행 및 응답 받아오기
         SearchListResponse searchResponse = search.execute();

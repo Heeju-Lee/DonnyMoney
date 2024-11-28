@@ -13,13 +13,13 @@ import java.util.LinkedHashMap;
 public class ParentReportResponseDto {
 
     //실제 쓴 돈
-    private HashMap<String, Integer> chartPayment;
+    private LinkedHashMap<String, Integer> chartPayment;
 
     //소비 게획서에 쓴 돈
-    private HashMap<String, Integer> monthPlan;
+    private LinkedHashMap<String, Integer> monthPlan;
 
     // 퀴즈 많이 맞춘 순
-    private LinkedHashMap<String, Integer> showQuizResultTop3;
+    private HashMap<String, Integer> showQuizResultTop3;
 
     //퀴즈 결과
     private HashMap<String,Integer> showQuizResult;

@@ -15,7 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlanResponseDto {
 	
-	private Long plan_num;
 	private int shopping;
 	private int transport;
 	private int cvs;
@@ -26,7 +25,6 @@ public class PlanResponseDto {
     private LocalDate modifiedAt;       
 	
 	public PlanResponseDto(Plan plan) {
-	    this.plan_num = plan.getPlanNum();
 	    this.shopping = plan.getShopping();
 	    this.transport = plan.getTransport();
 	    this.cvs = plan.getCvs();

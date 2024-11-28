@@ -8,6 +8,7 @@
 # testing
 /coverage
 
+
 # production
 /build
 
@@ -23,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # testing
-src/pages/test/*
+src/pages/test/

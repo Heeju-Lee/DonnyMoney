@@ -29,15 +29,18 @@ public class NotificationResponseDto {
     
     private String senderType;
     
+    private Boolean isRead;
+    
 
 	public NotificationResponseDto(Long notiNum, Long parentNum, Long childNum, String message, String category,
-			String senderType) {
+			String senderType, Boolean isRead) {
 		this.notiNum = notiNum;
 		this.parentNum = parentNum;
 		this.childNum = childNum;
 		this.message = message;
 		this.category = category;
 		this.senderType = senderType;
+		this.isRead = isRead;
 //        this.allNotification = allNotification;
 	}
 	

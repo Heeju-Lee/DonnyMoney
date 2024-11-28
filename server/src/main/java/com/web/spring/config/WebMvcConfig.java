@@ -6,6 +6,7 @@ import
 org.springframework.web.servlet.config.annotation.CorsRegistry;
 import 
 org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import 
 org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,8 +18,9 @@ org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 	
 
-    @Value("${jwt.response.header}")
-    private String jwtHeader;
+	@Value("${jwt.response.header}")
+	private String jwtHeader;
+	
   @Override
   public void addCorsMappings(CorsRegistry registry) {
      registry.addMapping("/**")
@@ -27,5 +29,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
      .exposedHeaders(jwtHeader) // 'Authorization' 헤더 값을 받아온다
      .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
      .allowCredentials(true);
+  }
+  
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+      registry.addResourceHandler("/assets/**")
+              .addResourceLocations("classpath:/assets/");
   }
 }

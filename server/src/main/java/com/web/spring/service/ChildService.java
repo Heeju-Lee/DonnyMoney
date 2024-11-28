@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.spring.dto.SignInResponseDto;
 import com.web.spring.dto.SignUpRequestDto;
 import com.web.spring.dto.child.plan.PlanRequestDto;
@@ -101,12 +102,11 @@ public class ChildService {
 	}
 	
 	@Transactional(readOnly = true)
-	public ParentResponeseDto findMyParent(Long ChildNum) {
-		Optional<Child> child= childRepository.findById(ChildNum);
+	public ParentResponeseDto findMyParent(String ppname ,String pphone) {
 		
-		Parent myParent= child.get().getParent();
+		Parent rParent =parentRepository.findByNameAndPhone(ppname, pphone);
 		
-		return new ParentResponeseDto(myParent);
+		return new ParentResponeseDto(rParent);
 	}
 
 	@Transactional(readOnly = true)
@@ -153,23 +153,27 @@ public class ChildService {
 		return new PlanResponseDto(plan);
 	}
 
-	// 소비 계획 조회하기
-	@Transactional
+// 소비 계획 조회하기
+@Transactional
   public PlanResponseDto showPlan(Long childNum, int year, int month) throws Exception {
+	    Plan plan = childRepository.findPlan(childNum, year, month);
+		   // plan이 null인지 체크
+	    if (plan == null) {
+	        return null; // Plan이 없으면 null 반환
+	    }
 
-		Plan plan = childRepository.findPlan(childNum, year, month);
-
-
-		return new PlanResponseDto(plan);
+	    // PlanResponseDto를 생성하여 반환
+	    PlanResponseDto pr = new PlanResponseDto(plan);
+	    return pr;
 	}
 
 	// 소비 계획 수정하기
 	@Transactional
-	public PlanResponseDto updatePlan(Long planNum, PlanRequestDto planRequestDto) throws Exception {
+	public PlanResponseDto updatePlan(Long childNum,int year,int month, PlanRequestDto planRequestDto) throws Exception {
 
-		System.out.println(planNum);
+		Plan findPlan = childRepository.findPlan(childNum, year, month);
 
-		Plan plan = planRepository.findById(planNum).orElseThrow(() -> new NoSuchElementException("PlanNum not found"));
+		Plan plan = planRepository.findById(findPlan.getPlanNum()).orElseThrow(() -> new NoSuchElementException("PlanNum not found"));
 
 		System.out.println(plan);
 		plan.setShopping(planRequestDto.getShopping());
@@ -235,10 +239,11 @@ public class ChildService {
 
 	// 이번달 카테고리별 소비내역
 	@Transactional(readOnly = true)
-	public HashMap<String, Integer> showMonthChart(Long childNum, int year, int month) {
+	public LinkedHashMap<String, Integer> showMonthChart(Long childNum, int year, int month) {
 		List<Payment> payments = showMonthList(childNum, year, month);
 
-		HashMap<String, Integer> categoryTotal = new HashMap<>();
+		// 합산된 값 저장
+		HashMap<String, Integer> categoryTotal = new LinkedHashMap<>();
 
 		payments.forEach(payment -> {
 			String category = payment.getCategory();
@@ -246,8 +251,18 @@ public class ChildService {
 
 			categoryTotal.put(category, categoryTotal.getOrDefault(category, 0) + amount);
 		});
+		
+	    // 지정된 순서대로 LinkedHashMap에 넣기
+	    LinkedHashMap<String, Integer> orderedCategoryTotal = new LinkedHashMap<>();
+	    orderedCategoryTotal.put("shopping", categoryTotal.getOrDefault("shopping", 0));
+	    orderedCategoryTotal.put("food", categoryTotal.getOrDefault("food", 0));
+	    orderedCategoryTotal.put("transport", categoryTotal.getOrDefault("transport", 0));
+	    orderedCategoryTotal.put("cvs", categoryTotal.getOrDefault("cvs", 0));
+	    orderedCategoryTotal.put("saving", categoryTotal.getOrDefault("saving", 0));
+	    orderedCategoryTotal.put("others", categoryTotal.getOrDefault("others", 0));
 
-		return categoryTotal;
+
+	    return orderedCategoryTotal;  // HashMap으로 변환해서 반환
 	}
 
 	// 퀴즈문제 보여주기
@@ -309,14 +324,15 @@ public class ChildService {
 
 	// 이번달 계획 차트
 	@Transactional(readOnly = true)
-	public HashMap<String, Integer> monthPlan(Long childNum, int year, int month) {
+	public LinkedHashMap<String, Integer> monthPlan(Long childNum, int year, int month) {
 
-		HashMap<String, Integer> response = new HashMap<>();
+		
+		LinkedHashMap<String, Integer> response = new LinkedHashMap<>();
 		Optional<Child> child = findChild(childNum);
-
+		Plan defalutPlan = new Plan(0L, 0, 0, 0, 0, 0, 0);
 		Plan monthPlan = child.get().getPlans().stream()
 				.filter(plan -> plan.getModifiedAt().getMonthValue() == month && plan.getModifiedAt().getYear() == year)
-				.findFirst().orElseThrow();
+				.findFirst().orElse(defalutPlan);
 
 		response.put("shopping", monthPlan.getShopping());
 		response.put("food", monthPlan.getFood());
@@ -350,7 +366,7 @@ public class ChildService {
 	}
 
 	// 퀴즈결과 Top3만 보기
-	public LinkedHashMap<String, Integer> showQuizResultTop3(Long child) {
+	public HashMap<String, Integer> showQuizResultTop3(Long child) {
 
 		HashMap<String, Integer> result = new HashMap<>();
 
@@ -367,7 +383,7 @@ public class ChildService {
 		// 경제의 역사 결과 넣기
 		result.put("qHistory", qr.getQHistory());
 
-		LinkedHashMap<String, Integer> sortedResult = result.entrySet().stream()
+		HashMap<String, Integer> sortedResult = result.entrySet().stream()
 				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())) // 값 내림차순 정렬
 				.limit(3) // 상위 3개만 선택
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, // 중복 키가 발생할 경우 해결 방법

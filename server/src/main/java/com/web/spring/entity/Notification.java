@@ -49,6 +49,9 @@ public class Notification extends Auditable{
     @ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "child_num")
 	private Child child;
+    
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead = false; // 기본값: 읽지 않음
 
 
 	public Notification(Parent parent, Child child, String message, String category, String senderType) {
@@ -57,6 +60,7 @@ public class Notification extends Auditable{
 		this.senderType = senderType;
 		this.parent = parent;
 		this.child = child;
+	       this.isRead = false; 
 	}
 	
     public NotificationResponseDto toNotification( Notification notification) {
@@ -68,6 +72,7 @@ public class Notification extends Auditable{
     			.message(notification.getMessage())
     			.category(notification.getCategory())
     			.senderType(notification.getSenderType())
+    			.isRead(notification.getIsRead()) // 읽음 여부 추가
     			.build();
     			
     }
@@ -75,7 +80,9 @@ public class Notification extends Auditable{
 	@Override
 	public String toString() {
 		return "Notification [notiNum=" + notiNum + ", message=" + message + ", category=" + category + ", senderType="
-				+ senderType + ", parent=" + parent + ", child=" + child + "]";
+				+ senderType + ", parent=" + parent + ", child=" + child + ", isRead=" + isRead + "]";
 	}
+
+
 	
 }
