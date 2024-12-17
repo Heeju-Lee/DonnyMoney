@@ -1,3 +1,4 @@
+
 ##  :bank: 프로젝트 소개
 진행 기간 : 2024.10.21 ~ 2024.11.26 <br>
 아이들을 대상으로 한 금융 교육 web 서비스를 개발했습니다.
@@ -28,8 +29,7 @@
 <br>
 
 ##  :bank: 화면 
-
-
+https://github.com/user-attachments/assets/24017def-372d-44db-b144-80ff871b342e
 
 <br>
 
